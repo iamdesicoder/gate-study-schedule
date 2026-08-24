@@ -2,62 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- iPhone Optimized Viewport: Prevents accidental zooming on taps -->
+  <!-- iPhone Optimized Viewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Is Babu Busy? 🧸</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Smooth iOS-like scrolling */
     body { -webkit-overflow-scrolling: touch; }
-    /* Hide scrollbar for a cleaner look */
     ::-webkit-scrollbar { display: none; }
     .heart-float {
       position: fixed;
       pointer-events: none;
       z-index: 9999;
-      animation: floatUp 2s ease-out forwards;
+      animation: floatUp 2.5s ease-out forwards;
     }
     @keyframes floatUp {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-400px) scale(1.5); opacity: 0; }
+      0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-500px) scale(1.5) rotate(15deg); opacity: 0; }
     }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased p-4 pb-32">
-  <div class="max-w-md mx-auto space-y-6 mt-4">
+  <div class="max-w-md mx-auto space-y-5 mt-2">
     
     <!-- Cute Header -->
-    <header class="text-center space-y-2">
-      <div class="inline-block bg-pink-500/20 text-pink-300 px-4 py-1 rounded-full text-xs font-extrabold tracking-widest mb-1">
+    <header class="text-center space-y-1">
+      <div class="inline-block bg-pink-500/20 text-pink-300 px-4 py-1 rounded-full text-[10px] font-extrabold tracking-widest mb-1">
         FOR MY FAVORITE PERSON ❤️
       </div>
       <h1 class="text-3xl font-extrabold tracking-tight text-white">Is Babu Busy? 🧸</h1>
-      <p class="text-sm text-slate-400 px-4">Check my live schedule so you know exactly when to call!</p>
     </header>
 
-    <!-- Real-time Status Card -->
+    <!-- 📝 THE DAILY SECRET NOTE (Change this text whenever you want!) -->
+    <div class="relative overflow-hidden bg-gradient-to-r from-pink-900/40 to-rose-900/40 border border-pink-500/30 rounded-2xl p-4 shadow-lg shadow-pink-900/10">
+      <div class="absolute top-0 left-0 w-1 h-full bg-pink-500"></div>
+      <h3 class="text-xs font-bold text-pink-400 uppercase tracking-wider mb-1">Today's Secret Note 💌</h3>
+      <p class="text-sm font-medium text-pink-100 italic leading-snug">
+        "Good morning beautiful! Just thinking about you while prepping for GATE. Have the best day! Missing you!"
+      </p>
+    </div>
+
+    <!-- Real-time Status Card with Countdown -->
     <div id="statusCard" class="p-6 rounded-3xl border transition-all duration-500 flex items-center justify-between relative overflow-hidden">
-      <div class="relative z-10">
-        <div class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-1">Live Status</div>
-        <div id="statusText" class="text-2xl font-black mt-1">Checking...</div>
+      <div class="relative z-10 w-full">
+        <div class="flex justify-between items-start">
+          <div>
+            <div class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-1">Live Status</div>
+            <div id="statusText" class="text-2xl font-black mt-1">Checking...</div>
+          </div>
+          <div class="flex items-center justify-center h-10 w-10 rounded-full bg-black/20 shrink-0">
+            <div id="statusBadge" class="h-3 w-3 rounded-full"></div>
+          </div>
+        </div>
         <div id="statusSubtext" class="text-sm mt-1 font-medium text-slate-300"></div>
-      </div>
-      <div class="relative z-10 flex items-center justify-center h-12 w-12 rounded-full bg-black/20">
-        <div id="statusBadge" class="h-4 w-4 rounded-full"></div>
+        
+        <!-- ⏳ Countdown Timer -->
+        <div id="countdownContainer" class="mt-4 pt-3 border-t border-white/10 hidden">
+          <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">Freedom In:</div>
+          <div id="countdownTimer" class="text-xl font-mono font-black tracking-tight">00:00:00</div>
+        </div>
       </div>
     </div>
 
-    <!-- Filter Buttons (Scrollable horizontally on small iPhones) -->
-    <div class="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 snap-x">
-      <button onclick="filterSchedule('all')" class="filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all">Everything</button>
-      <button onclick="filterSchedule('Digital Logic')" class="filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">Digital Logic</button>
-      <button onclick="filterSchedule('Theory of Computation')" class="filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">TOC</button>
-      <button onclick="filterSchedule('DBMS')" class="filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">DBMS</button>
+    <!-- 🍕 CRAVINGS WIDGET (Update what you want to eat!) -->
+    <div class="flex items-center gap-3 bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 px-4 shadow-sm">
+      <div class="text-2xl">🤤</div>
+      <div>
+        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Current Craving</div>
+        <div class="text-sm font-semibold text-orange-200">A plate of homemade Chilla and Paneer</div>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 snap-x mt-2">
+      <button onclick="filterSchedule('all')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all">Everything</button>
+      <button onclick="filterSchedule('Digital Logic')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">Digital Logic</button>
+      <button onclick="filterSchedule('Theory of Computation')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">TOC</button>
+      <button onclick="filterSchedule('DBMS')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">DBMS</button>
     </div>
 
     <!-- Schedule List -->
     <div class="space-y-2">
-      <h2 class="text-sm font-bold text-slate-500 pl-2 uppercase tracking-wider">Upcoming Classes</h2>
+      <h2 class="text-[11px] font-bold text-slate-500 pl-2 uppercase tracking-wider">Upcoming Classes</h2>
       <div id="scheduleContainer" class="space-y-3">
         <!-- Injected via JavaScript -->
       </div>
@@ -65,7 +90,7 @@
   </div>
 
   <!-- Interactive "Send Hug" Floating Button -->
-  <button onclick="sendHug(this)" class="fixed bottom-8 right-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white p-4 rounded-full shadow-[0_8px_30px_rgb(236,72,153,0.4)] hover:scale-105 active:scale-95 transition-all z-50 flex items-center justify-center gap-2 group">
+  <button onclick="sendHug(this)" class="fixed bottom-8 right-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white p-4 rounded-full shadow-[0_8px_30px_rgb(236,72,153,0.5)] hover:scale-105 active:scale-95 transition-all z-50 flex items-center justify-center gap-2 group">
     <span class="text-2xl drop-shadow-md">💌</span>
     <span id="hugText" class="font-bold pr-2 hidden transition-all">Send Hug!</span>
   </button>
@@ -145,25 +170,40 @@
       return new Date(iso).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
     }
 
-    // Cute interactive button logic
+    function formatCountdown(ms) {
+      const totalSecs = Math.floor(ms / 1000);
+      const h = String(Math.floor(totalSecs / 3600)).padStart(2, '0');
+      const m = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, '0');
+      const s = String(totalSecs % 60).padStart(2, '0');
+      return `${h}h ${m}m ${s}s`;
+    }
+
     function sendHug(btn) {
       const text = document.getElementById('hugText');
-      text.innerText = "Hug Sent! 🥰";
+      text.innerText = "Sent to Babu's Redmi! 📲";
       text.classList.remove('hidden');
       
-      // Create floating heart
-      const heart = document.createElement('div');
-      heart.innerText = ['💖', '💕', '🧸', '✨'][Math.floor(Math.random() * 4)];
-      heart.className = 'heart-float text-4xl drop-shadow-md';
-      heart.style.left = (Math.random() * 60 + 20) + 'vw';
-      heart.style.bottom = '100px';
-      document.body.appendChild(heart);
+      // Floating hearts effect
+      for(let i=0; i<3; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.innerText = ['💖', '💕', '🧸', '💌'][Math.floor(Math.random() * 4)];
+          heart.className = 'heart-float text-4xl drop-shadow-md';
+          heart.style.left = (Math.random() * 60 + 20) + 'vw';
+          heart.style.bottom = '90px';
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 2500);
+        }, i * 200);
+      }
 
-      setTimeout(() => heart.remove(), 2000);
+      // ADD YOUR WHATSAPP NUMBER BELOW (with country code, e.g., 919876543210 for India)
+      // Remove the '//' on the line below to enable WhatsApp redirect!
+      setTimeout(() => window.location.href = "https://wa.me/918130503027?text=Thinking+of+you!+Sending+a+hug!+💌", 1500);
+
       setTimeout(() => {
         text.classList.add('hidden');
         text.innerText = "Send Hug!";
-      }, 2500);
+      }, 3000);
     }
 
     function updateStatus() {
@@ -187,25 +227,41 @@
       const text = document.getElementById('statusText');
       const subtext = document.getElementById('statusSubtext');
       const badge = document.getElementById('statusBadge');
+      const countdownContainer = document.getElementById('countdownContainer');
+      const countdownTimer = document.getElementById('countdownTimer');
 
       if (activeClass) {
         // Babu is Busy styling
         card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-indigo-950/90 to-purple-950/90 border-indigo-500/30 flex items-center justify-between shadow-lg shadow-indigo-900/20";
         text.className = "text-2xl font-black mt-1 text-indigo-300";
         text.innerText = "Babu is in class! 🤫";
-        subtext.innerText = `Studying ${activeClass.subject} until ${formatTime(activeClass.end)}.\nTalk to you soon! 💕`;
+        subtext.innerText = `Studying ${activeClass.subject}.\nTalk to you soon! 💕`;
         badge.className = "h-4 w-4 rounded-full bg-indigo-400 animate-ping shadow-[0_0_15px_rgba(129,140,248,0.8)]";
+        
+        // Show Countdown to freedom
+        countdownContainer.classList.remove('hidden');
+        countdownTimer.innerText = formatCountdown(new Date(activeClass.end) - now);
+        countdownTimer.className = "text-xl font-mono font-black tracking-tight text-indigo-200";
+
       } else {
         // Babu is Free styling
         card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-pink-950/80 to-rose-950/80 border-pink-500/40 flex items-center justify-between shadow-lg shadow-pink-900/20";
         text.className = "text-2xl font-black mt-1 text-pink-400";
         text.innerText = "Babu is FREE! 🥰";
+        badge.className = "h-4 w-4 rounded-full bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.8)]";
+        
         if (nextClass) {
           subtext.innerText = `Call him! His next class is at ${formatTime(nextClass.start)}.`;
+          
+          // Show Countdown to next class
+          countdownContainer.classList.remove('hidden');
+          document.querySelector('#countdownContainer div:first-child').innerText = 'Next Class In:';
+          countdownTimer.innerText = formatCountdown(new Date(nextClass.start) - now);
+          countdownTimer.className = "text-xl font-mono font-black tracking-tight text-pink-200";
         } else {
-          subtext.innerText = "He has no more classes today! 💖";
+          subtext.innerText = "He has no more classes scheduled! 💖";
+          countdownContainer.classList.add('hidden');
         }
-        badge.className = "h-4 w-4 rounded-full bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.8)]";
       }
     }
 
@@ -214,9 +270,7 @@
       container.innerHTML = '';
       const now = new Date();
 
-      // Filter out past classes
       let upcoming = schedule.filter(item => new Date(item.end) >= now);
-
       if (filter !== 'all') {
         upcoming = upcoming.filter(item => item.subject === filter);
       }
@@ -225,7 +279,7 @@
         container.innerHTML = `
           <div class="text-center p-8 bg-slate-900/50 rounded-3xl border border-slate-800/80 border-dashed">
             <span class="text-4xl block mb-2">🎉</span>
-            <p class="text-slate-400 font-medium">No upcoming classes for this subject!</p>
+            <p class="text-slate-400 text-sm font-medium">No upcoming classes for this subject!</p>
           </div>
         `;
         return;
@@ -255,11 +309,11 @@
 
     function filterSchedule(category) {
       document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all";
+        btn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all";
       });
       const activeBtn = Array.from(document.querySelectorAll('.filter-btn')).find(btn => btn.innerText.includes(category === 'Theory of Computation' ? 'TOC' : category === 'all' ? 'Everything' : category));
       if (activeBtn) {
-          activeBtn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all";
+          activeBtn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all";
       }
       renderSchedule(category);
     }
@@ -267,8 +321,14 @@
     // Initialize
     updateStatus();
     renderSchedule();
+    
+    // Refresh countdown every 1 second
     setInterval(() => {
       updateStatus();
+    }, 1000); 
+
+    // Refresh schedule lists every 1 minute to clear finished classes
+    setInterval(() => {
       const currentFilter = document.querySelector('.bg-pink-600').innerText;
       let filterParam = 'all';
       if (currentFilter.includes('Logic')) filterParam = 'Digital Logic';
