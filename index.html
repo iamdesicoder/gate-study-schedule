@@ -32,12 +32,12 @@
       <h1 class="text-3xl font-extrabold tracking-tight text-white">Is Babu Busy? 🧸</h1>
     </header>
 
-    <!-- 📝 THE DAILY SECRET NOTE (You can edit this text right here!) -->
+    <!-- 📝 THE DAILY SECRET NOTE (Automated 3x a day!) -->
     <div class="relative overflow-hidden bg-gradient-to-r from-pink-900/40 to-rose-900/40 border border-pink-500/30 rounded-2xl p-4 shadow-lg shadow-pink-900/10">
       <div class="absolute top-0 left-0 w-1 h-full bg-pink-500"></div>
-      <h3 class="text-xs font-bold text-pink-400 uppercase tracking-wider mb-1">Today's Secret Note 💌</h3>
-      <p class="text-sm font-medium text-pink-100 italic leading-snug">
-        "Good morning beautiful! Just thinking about you while prepping for GATE. Have the best day! Missing you!"
+      <h3 id="noteTitle" class="text-xs font-bold text-pink-400 uppercase tracking-wider mb-1">Today's Secret Note 💌</h3>
+      <p id="noteText" class="text-sm font-medium text-pink-100 italic leading-snug transition-all duration-300">
+        "Loading a sweet message for you..."
       </p>
     </div>
 
@@ -63,12 +63,12 @@
       </div>
     </div>
 
-    <!-- 🍕 CRAVINGS WIDGET -->
+    <!-- 🍕 CRAVINGS WIDGET (Automated 2x a day!) -->
     <div class="flex items-center gap-3 bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 px-4 shadow-sm">
       <div class="text-2xl">🤤</div>
       <div>
         <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Current Craving</div>
-        <div class="text-sm font-semibold text-orange-200">A plate of homemade Chilla and Paneer</div>
+        <div id="cravingText" class="text-sm font-semibold text-orange-200 transition-all duration-300">Thinking...</div>
       </div>
     </div>
 
@@ -103,14 +103,125 @@
     
     let schedule = [];
 
+    // --- 30 DAYS OF MORNING NOTES ---
+    const morningNotes = [
+      "Good morning beautiful! Starting my day thinking of you. 💕", "Wakey wakey! Babu is hitting the books, but you're on my mind. 📚",
+      "Morning cutie! Hope you slept well. Can't wait to hear your voice later! 🥰", "Good morning! Just a reminder that you're my favorite distraction. 🧸",
+      "Rise and shine! The only thing better than morning coffee is you. ☕", "Morning love! Let's conquer today so we can talk tonight! 💖",
+      "Good morning beautiful! Wishing I could start my day with a hug from you. ✨", "Wake up cutie! Babu's lectures are starting but my heart is with you. ❤️",
+      "Morning! Smile big today, it's my favorite thing in the world. 😊", "Good morning! Already counting down the hours until I see you. ⏳",
+      "Hey you! Have the best morning ever. I'm so lucky to have you. 💕", "Morning! Sending you a virtual forehead kiss to start your day. 💌",
+      "Good morning gorgeous! Go crush it today! 💪", "Wake up sleepyhead! I miss you already. 🧸", "Morning! You are the best part of my every day. 🌅",
+      "Good morning! Just dropping a quick note to say I love you. ❤️", "Rise and shine! The world is better with you in it. 🌍",
+      "Morning cutie! Let's both have a super productive day today. 📚", "Good morning! Just wanted to make you smile early today. 🥰",
+      "Wakey wakey! Babu is missing you so much right now! 💕", "Morning love! You're my motivation to study hard today. 🎯",
+      "Good morning! Remember to drink water and eat something yummy! 💧", "Hey beautiful! Hope your day is as amazing as you are. ✨",
+      "Morning! Thinking about your smile while I read these notes. 📖", "Good morning cutie! Big hugs to start your day. 🫂",
+      "Rise and shine! Can't wait to catch up with you later today. 📞", "Morning! You're the first thing on my mind today, as always. ❤️",
+      "Good morning! Wishing you a day full of happiness and zero stress. 🌸", "Wake up beautiful! Babu loves you! 💕", "Morning! Let's make today a great day. Love you! 🥰"
+    ];
+
+    // --- 30 DAYS OF AFTERNOON NOTES ---
+    const afternoonNotes = [
+      "Halfway through the day! Taking a tiny break just to miss you. ☕", "Lunchtime! Hope you're eating well. Study grind is still on! 💻",
+      "Afternoon slump... wishing I was napping next to you instead of studying! 😴", "Just finished a heavy lecture. Your smile would make this 100x better right now! ❤️",
+      "Afternoon cutie! Just checking in to see how my favorite person is doing. 🥰", "Lunch break! Eating food but craving your hugs. 🧸",
+      "The day is dragging, but thinking of you keeps me going! 💪", "Hey you! Take a break if you need it. I'm proud of you! ✨",
+      "Afternoon! Tell me what you had for lunch when we talk later! 🍕", "Just a quick mid-day reminder that you are amazing. 💕",
+      "Hey beautiful! Hope the second half of your day goes by fast. ⏳", "Afternoon! I'm buried in notes, rescue me! 📚",
+      "Taking a 5-minute breather just to send you this virtual hug. 🫂", "Lunchtime! Don't forget to rest your eyes for a bit today. 👀",
+      "Afternoon cutie! Missing your voice right about now. 📞", "Half the day is done! We are one step closer to calling each other tonight. 🌙",
+      "Hey! Just looking at your picture to get me through this next lecture. ❤️", "Afternoon! Hope nobody is stressing you out today! 😤",
+      "Lunch break! Wish we were grabbing food together right now. 🍔", "Hey beautiful! Keep smiling, you're doing great today. 💕",
+      "Afternoon! Babu is working hard, hope you are having a good day! 💻", "Just a quick note to say I appreciate you so much. 🥰",
+      "Afternoon check-in! Did you drink enough water today? 💧", "Hey cutie! Sending you some mid-day energy! ⚡",
+      "Lunchtime! I'd trade this meal for a date with you any day. 🍝", "Afternoon! The sun is shining but you're still brighter. ✨",
+      "Hey! Just wanted to interrupt your day to say I miss you. 🧸", "Halfway there! Keep going beautiful. ❤️",
+      "Afternoon! Just daydreaming about our next date. 💭", "Hey you! Have a great afternoon. Talk to you soon! 💕"
+    ];
+
+    // --- 30 DAYS OF EVENING NOTES ---
+    const eveningNotes = [
+      "Good evening my love! Almost done with classes for today. 🌙", "The sun is setting and I'm just here missing my favorite person. ✨",
+      "Wrapping up my notes! Can't wait to call you and tell you about my day. 📞", "Evening cutie! Sending you a massive virtual hug to end your day right! 💌",
+      "Hey beautiful! Hope your day was amazing. Let's relax now. 🧸", "Evening! I am so ready to just hear your voice. ❤️",
+      "The best part of my day is coming up... talking to you! 🥰", "Evening love! Go rest up, you did great today. 🛋️",
+      "Just closing my books. You're my reward at the end of a long day. 📚", "Good evening! Let's watch something together later? 🍿",
+      "Evening cutie! What's for dinner? (Besides me missing you) 🍝", "The day is finally over! So glad I get to end it with you. 💕",
+      "Evening! Wishing we were cuddling right now instead of being apart. 🫂", "Hey beautiful! Get comfy, grab some food, and let's talk soon. 🌙",
+      "Good evening! I hope you're smiling right now. 😊", "Wrapping things up! You're the only thing on my mind tonight. ❤️",
+      "Evening! I missed you so much today. Tell me everything! 📞", "Hey cutie! The stars are out, but I'm just looking at your photos. ✨",
+      "Good evening! Let's leave today's stress behind and just chill. 😌", "Evening love! Babu is tired but never too tired for you. 🧸",
+      "Hey! I hope you have a relaxing night. You deserve it. 💕", "Evening! Sending you all my love before the day ends. 💌",
+      "Good evening beautiful! Can't wait to hear your laugh. 🥰", "The day is done! Time for my favorite person in the world. 🌍",
+      "Evening! Make sure you eat a good dinner tonight! 🍕", "Hey cutie! Just wanted to say I'm so incredibly proud of you. ❤️",
+      "Good evening! I'm officially clocking out. You have my full attention. ⏱️", "Evening love! Let's talk until we fall asleep tonight. 😴",
+      "Hey beautiful! Just counting the minutes until I can call you. ⏳", "Good evening! Sleep well later and dream of me! 💕"
+    ];
+
+    // --- 30 DAYS OF DAYTIME CRAVINGS ---
+    const dayCravings = [
+      "A plate of homemade Chilla and Paneer 🥞", "A huge cup of cold coffee ☕", "Just a quick 5-minute break to hear your voice 📞",
+      "Something spicy and nice! Maybe some street food 🌶️", "A massive slice of pizza 🍕", "A sweet hug from you right now 🫂",
+      "A cold iced tea to beat this study heat 🍹", "Some momos with that extra spicy chutney 🥟", "A quick 20-minute power nap 😴",
+      "Your beautiful smile! 🥰", "A thick chocolate milkshake 🥤", "A plate of chole bhature 🍛", "To hold your hand while I study 🤝",
+      "Some crispy french fries 🍟", "A long drive with you and some good music 🚗", "A fresh fruit smoothie 🍓",
+      "Some buttery pav bhaji 🍞", "Just to see your face for 2 minutes 🥺", "A giant plate of nachos 🧀",
+      "A cold glass of nimbu pani 🍋", "A big, warm hug from my favorite person 🧸", "Some spicy paneer tikka 🍢",
+      "A quick break to text you 💌", "A massive burger with extra cheese 🍔", "To skip class and go on a date with you 🏃‍♂️",
+      "A hot cup of chai and some biscuits ☕", "Some crispy spring rolls 🌯", "Your attention! 👀", "A sweet pastry from a bakery 🍰", "Just to be sitting next to you right now 💕"
+    ];
+
+    // --- 30 DAYS OF NIGHTTIME CRAVINGS ---
+    const nightCravings = [
+      "Late night Maggi and talking to you 🍜", "Ice cream! (And maybe a hug) 🍦", "A long phone call with my favorite person 🌙",
+      "Just to sleep and dream about you 😴", "Late night movie marathon with you 🍿", "Some spicy late-night noodles 🥡",
+      "A giant chocolate bar 🍫", "Cuddles and endless conversations 🫂", "A warm cup of hot chocolate ☕",
+      "To hear about your entire day in detail 🥰", "Late night pizza delivery 🍕", "Some sweet gulab jamun 🍯",
+      "Just your voice to help me fall asleep 📞", "A plate of late-night biryani 🍲", "To hold you close right now 🧸",
+      "A cold dessert to end the day 🍧", "Some crispy chips and a good show 📺", "A late-night walk with you under the stars ✨",
+      "Something sweet, like you! 🍬", "Just to close my books and rest my eyes 😌", "A warm brownie with vanilla ice cream 🍰",
+      "Late night parathas with butter 🧈", "To fall asleep on a call with you 📱", "A big bowl of pasta 🍝",
+      "Your goodnight kisses 💋", "Some late-night street food adventure 🌃", "A massive slice of cheesecake 🧀",
+      "Just to be lazy with you right now 🛋️", "Some sweet rasmalai 🥛", "To end the day knowing you love me 💕"
+    ];
+
+    // --- DYNAMIC CONTENT ENGINE ---
+    function updateDynamicContent() {
+      const now = new Date();
+      // Calculate day of year to rotate through the 30 items
+      const start = new Date(now.getFullYear(), 0, 0);
+      const diff = now - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dayOfYear = Math.floor(diff / oneDay);
+      
+      const index = dayOfYear % 30; // Cycles 0 to 29
+      const hour = now.getHours();
+
+      let noteTitleStr = "Good Morning 💌";
+      let noteStr = morningNotes[index];
+      
+      if (hour >= 12 && hour < 17) {
+        noteTitleStr = "Good Afternoon 💌";
+        noteStr = afternoonNotes[index];
+      } else if (hour >= 17) {
+        noteTitleStr = "Good Evening 💌";
+        noteStr = eveningNotes[index];
+      }
+
+      let cravingStr = (hour < 17) ? dayCravings[index] : nightCravings[index];
+
+      document.getElementById("noteTitle").innerText = noteTitleStr;
+      document.getElementById("noteText").innerText = `"${noteStr}"`;
+      document.getElementById("cravingText").innerText = cravingStr;
+    }
+
     async function fetchSchedule() {
       try {
         const response = await fetch(SCRIPT_URL);
         schedule = await response.json();
         
-        // Sort chronologically
         schedule.sort((a, b) => new Date(a.start) - new Date(b.start));
-        
         updateStatus();
         renderSchedule();
       } catch (error) {
@@ -153,7 +264,7 @@
         }, i * 200);
       }
 
-      // ADD YOUR WHATSAPP NUMBER BELOW (with country code, e.g., 919876543210 for India)
+      // ADD YOUR WHATSAPP NUMBER BELOW (with country code, e.g., 918130503027 for India)
       // Remove the '//' on the line below to enable WhatsApp redirect!
       setTimeout(() => window.location.href = "https://wa.me/918130503027?text=Thinking+of+you!+Sending+a+hug!+💌", 1500);
 
@@ -164,7 +275,7 @@
     }
 
     function updateStatus() {
-      if (schedule.length === 0) return; // Wait until data loads
+      if (schedule.length === 0) return;
 
       const now = new Date();
       let activeClass = null;
@@ -190,7 +301,6 @@
       const countdownTimer = document.getElementById('countdownTimer');
 
       if (activeClass) {
-        // Babu is Busy styling
         card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-indigo-950/90 to-purple-950/90 border-indigo-500/30 flex items-center justify-between shadow-lg shadow-indigo-900/20";
         text.className = "text-2xl font-black mt-1 text-indigo-300";
         text.innerText = "Babu is in class! 🤫";
@@ -203,7 +313,6 @@
         countdownTimer.className = "text-xl font-mono font-black tracking-tight text-indigo-200";
 
       } else {
-        // Babu is Free styling
         card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-pink-950/80 to-rose-950/80 border-pink-500/40 flex items-center justify-between shadow-lg shadow-pink-900/20";
         text.className = "text-2xl font-black mt-1 text-pink-400";
         text.innerText = "Babu is FREE! 🥰";
@@ -275,7 +384,8 @@
       renderSchedule(category);
     }
 
-    // Load data on start
+    // Initialize content on load
+    updateDynamicContent();
     fetchSchedule();
     
     // Refresh countdown every 1 second
@@ -283,8 +393,9 @@
       if(schedule.length > 0) updateStatus();
     }, 1000); 
 
-    // Refresh schedule lists every 1 minute to clear finished classes
+    // Refresh schedule lists & dynamic notes every 1 minute
     setInterval(() => {
+      updateDynamicContent(); // Keeps notes updated as time passes
       const currentFilter = document.querySelector('.bg-pink-600')?.innerText || 'all';
       let filterParam = 'all';
       if (currentFilter.includes('Logic')) filterParam = 'Digital Logic';
