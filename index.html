@@ -149,7 +149,7 @@
         if (nextClass) {
           subtext.innerText = `Next class: ${nextClass.title} on ${formatDate(nextClass.start)} at ${formatTime(nextClass.start)}`;
         } else {
-          subtext.innerText = "No more scheduled classes.";
+          subtext.innerText = "No upcoming classes scheduled.";
         }
         badge.className = "h-4 w-4 rounded-full bg-emerald-500";
       }
@@ -158,10 +158,29 @@
     function renderSchedule(filter = 'all') {
       const container = document.getElementById('scheduleContainer');
       container.innerHTML = '';
+      
+      const now = new Date();
 
-      const filtered = filter === 'all' ? schedule : schedule.filter(item => item.subject === filter);
+      // First, only keep classes that haven't ended yet
+      let upcomingClasses = schedule.filter(item => new Date(item.end) >= now);
 
-      filtered.forEach(item => {
+      // Then, apply the subject filter if one is selected
+      if (filter !== 'all') {
+        upcomingClasses = upcomingClasses.filter(item => item.subject === filter);
+      }
+
+      // If no classes match the filter/time, show a friendly message
+      if (upcomingClasses.length === 0) {
+        container.innerHTML = `
+          <div class="text-center p-8 bg-slate-900 border border-slate-800/80 rounded-xl">
+            <p class="text-slate-400 font-medium">No upcoming classes to show here.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Render the upcoming classes
+      upcomingClasses.forEach(item => {
         const badgeColor = item.subject === 'DBMS' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' : 
                            item.subject === 'Digital Logic' ? 'bg-sky-500/20 text-sky-300 border-sky-500/30' : 
                            'bg-purple-500/20 text-purple-300 border-purple-500/30';
@@ -190,14 +209,27 @@
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.className = "filter-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
       });
-      event.target.className = "filter-btn px-4 py-1.5 rounded-full bg-indigo-600 text-white hover:bg-indigo-500 transition";
+      // Find the button that was clicked and update its style
+      const activeBtn = Array.from(document.querySelectorAll('.filter-btn')).find(btn => btn.innerText.includes(category === 'Theory of Computation' ? 'TOC' : category === 'all' ? 'All' : category));
+      if (activeBtn) {
+          activeBtn.className = "filter-btn px-4 py-1.5 rounded-full bg-indigo-600 text-white hover:bg-indigo-500 transition";
+      }
       renderSchedule(category);
     }
 
     // Initialize
     updateStatus();
     renderSchedule();
-    setInterval(updateStatus, 30000); // refresh status every 30s
+    setInterval(() => {
+      updateStatus();
+      // Re-render the active filter so expired classes disappear automatically
+      const currentFilterText = document.querySelector('.bg-indigo-600').innerText;
+      let filterParam = 'all';
+      if (currentFilterText.includes('Digital Logic')) filterParam = 'Digital Logic';
+      if (currentFilterText.includes('TOC')) filterParam = 'Theory of Computation';
+      if (currentFilterText.includes('DBMS')) filterParam = 'DBMS';
+      renderSchedule(filterParam);
+    }, 60000); // refresh status and lists every 60 seconds
   </script>
 </body>
 </html>
