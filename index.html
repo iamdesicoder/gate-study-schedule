@@ -2,116 +2,168 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GATE Prep | Study Schedule & Status</title>
+  <!-- iPhone Optimized Viewport: Prevents accidental zooming on taps -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Is Babu Busy? 🧸</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Smooth iOS-like scrolling */
+    body { -webkit-overflow-scrolling: touch; }
+    /* Hide scrollbar for a cleaner look */
+    ::-webkit-scrollbar { display: none; }
+    .heart-float {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      animation: floatUp 2s ease-out forwards;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-400px) scale(1.5); opacity: 0; }
+    }
+  </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased p-4 md:p-8">
-  <div class="max-w-3xl mx-auto space-y-6">
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased p-4 pb-32">
+  <div class="max-w-md mx-auto space-y-6 mt-4">
     
-    <!-- Header -->
+    <!-- Cute Header -->
     <header class="text-center space-y-2">
-      <h1 class="text-3xl font-extrabold tracking-tight text-white">GATE 2027 Study Schedule</h1>
-      <p class="text-sm text-slate-400">Live lecture timings and real-time availability status</p>
+      <div class="inline-block bg-pink-500/20 text-pink-300 px-4 py-1 rounded-full text-xs font-extrabold tracking-widest mb-1">
+        FOR MY FAVORITE PERSON ❤️
+      </div>
+      <h1 class="text-3xl font-extrabold tracking-tight text-white">Is Babu Busy? 🧸</h1>
+      <p class="text-sm text-slate-400 px-4">Check my live schedule so you know exactly when to call!</p>
     </header>
 
     <!-- Real-time Status Card -->
-    <div id="statusCard" class="p-5 rounded-2xl border transition-all duration-300 bg-slate-900 border-slate-800 flex items-center justify-between">
-      <div>
-        <div class="text-xs uppercase tracking-wider font-semibold text-slate-400">Current Status</div>
-        <div id="statusText" class="text-xl font-bold mt-1 text-slate-200">Checking schedule...</div>
-        <div id="statusSubtext" class="text-xs text-slate-400 mt-0.5"></div>
+    <div id="statusCard" class="p-6 rounded-3xl border transition-all duration-500 flex items-center justify-between relative overflow-hidden">
+      <div class="relative z-10">
+        <div class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-1">Live Status</div>
+        <div id="statusText" class="text-2xl font-black mt-1">Checking...</div>
+        <div id="statusSubtext" class="text-sm mt-1 font-medium text-slate-300"></div>
       </div>
-      <div id="statusBadge" class="h-4 w-4 rounded-full bg-slate-500 animate-pulse"></div>
+      <div class="relative z-10 flex items-center justify-center h-12 w-12 rounded-full bg-black/20">
+        <div id="statusBadge" class="h-4 w-4 rounded-full"></div>
+      </div>
     </div>
 
-    <!-- Filter Buttons -->
-    <div class="flex flex-wrap gap-2 justify-center text-sm font-medium">
-      <button onclick="filterSchedule('all')" class="filter-btn px-4 py-1.5 rounded-full bg-indigo-600 text-white hover:bg-indigo-500 transition">All</button>
-      <button onclick="filterSchedule('Digital Logic')" class="filter-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Digital Logic</button>
-      <button onclick="filterSchedule('Theory of Computation')" class="filter-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 transition">TOC</button>
-      <button onclick="filterSchedule('DBMS')" class="filter-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 transition">DBMS</button>
+    <!-- Filter Buttons (Scrollable horizontally on small iPhones) -->
+    <div class="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 snap-x">
+      <button onclick="filterSchedule('all')" class="filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all">Everything</button>
+      <button onclick="filterSchedule('Digital Logic')" class="filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">Digital Logic</button>
+      <button onclick="filterSchedule('Theory of Computation')" class="filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">TOC</button>
+      <button onclick="filterSchedule('DBMS')" class="filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">DBMS</button>
     </div>
 
     <!-- Schedule List -->
-    <div id="scheduleContainer" class="space-y-3">
-      <!-- Injected via JavaScript -->
+    <div class="space-y-2">
+      <h2 class="text-sm font-bold text-slate-500 pl-2 uppercase tracking-wider">Upcoming Classes</h2>
+      <div id="scheduleContainer" class="space-y-3">
+        <!-- Injected via JavaScript -->
+      </div>
     </div>
   </div>
 
+  <!-- Interactive "Send Hug" Floating Button -->
+  <button onclick="sendHug(this)" class="fixed bottom-8 right-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white p-4 rounded-full shadow-[0_8px_30px_rgb(236,72,153,0.4)] hover:scale-105 active:scale-95 transition-all z-50 flex items-center justify-center gap-2 group">
+    <span class="text-2xl drop-shadow-md">💌</span>
+    <span id="hugText" class="font-bold pr-2 hidden transition-all">Send Hug!</span>
+  </button>
+
   <script>
     const schedule = [
-      // DBMS Weekend Sessions
-      { title: "DBMS: Lecture 3", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-08-23T10:30:00", end: "2026-08-23T13:30:00" },
-      { title: "DBMS: Lecture 4", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-08-23T14:30:00", end: "2026-08-23T19:30:00" },
-      { title: "DBMS: Lecture 5", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-08-29T09:00:00", end: "2026-08-29T13:00:00" },
-      { title: "DBMS: Lecture 6", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-08-29T14:00:00", end: "2026-08-29T18:00:00" },
-      { title: "DBMS: Lecture 7", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-08-30T09:00:00", end: "2026-08-30T13:00:00" },
-      { title: "DBMS: Lecture 8", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-08-30T14:00:00", end: "2026-08-30T18:00:00" },
-      { title: "DBMS: Lecture 9", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-05T09:00:00", end: "2026-09-05T13:00:00" },
-      { title: "DBMS: Lecture 10", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-05T14:00:00", end: "2026-09-05T18:00:00" },
-      { title: "DBMS: Lecture 11", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-06T09:00:00", end: "2026-09-06T13:00:00" },
-      { title: "DBMS: Lecture 12", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-06T14:00:00", end: "2026-09-06T18:00:00" },
-      { title: "DBMS: Lecture 13", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-12T09:00:00", end: "2026-09-12T13:00:00" },
-      { title: "DBMS: Lecture 14", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-12T14:00:00", end: "2026-09-12T18:00:00" },
-      { title: "DBMS: Lecture 15", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-13T09:00:00", end: "2026-09-13T13:00:00" },
-      { title: "DBMS: Lecture 16", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-13T14:00:00", end: "2026-09-13T18:00:00" },
-      { title: "DBMS: Lecture 17", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-19T09:00:00", end: "2026-09-19T13:00:00" },
-      { title: "DBMS: Lecture 18", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-19T14:00:00", end: "2026-09-19T18:00:00" },
-      { title: "DBMS: Lecture 19", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-20T09:00:00", end: "2026-09-20T13:00:00" },
-      { title: "DBMS: Lecture 20", subject: "DBMS", mentor: "Vijay Kumar Agarwal Sir", start: "2026-09-20T14:00:00", end: "2026-09-20T18:00:00" },
+      // DBMS
+      { title: "DBMS: Lecture 3", subject: "DBMS", start: "2026-08-23T10:30:00", end: "2026-08-23T13:30:00" },
+      { title: "DBMS: Lecture 4", subject: "DBMS", start: "2026-08-23T14:30:00", end: "2026-08-23T19:30:00" },
+      { title: "DBMS: Lecture 5", subject: "DBMS", start: "2026-08-29T09:00:00", end: "2026-08-29T13:00:00" },
+      { title: "DBMS: Lecture 6", subject: "DBMS", start: "2026-08-29T14:00:00", end: "2026-08-29T18:00:00" },
+      { title: "DBMS: Lecture 7", subject: "DBMS", start: "2026-08-30T09:00:00", end: "2026-08-30T13:00:00" },
+      { title: "DBMS: Lecture 8", subject: "DBMS", start: "2026-08-30T14:00:00", end: "2026-08-30T18:00:00" },
+      { title: "DBMS: Lecture 9", subject: "DBMS", start: "2026-09-05T09:00:00", end: "2026-09-05T13:00:00" },
+      { title: "DBMS: Lecture 10", subject: "DBMS", start: "2026-09-05T14:00:00", end: "2026-09-05T18:00:00" },
+      { title: "DBMS: Lecture 11", subject: "DBMS", start: "2026-09-06T09:00:00", end: "2026-09-06T13:00:00" },
+      { title: "DBMS: Lecture 12", subject: "DBMS", start: "2026-09-06T14:00:00", end: "2026-09-06T18:00:00" },
+      { title: "DBMS: Lecture 13", subject: "DBMS", start: "2026-09-12T09:00:00", end: "2026-09-12T13:00:00" },
+      { title: "DBMS: Lecture 14", subject: "DBMS", start: "2026-09-12T14:00:00", end: "2026-09-12T18:00:00" },
+      { title: "DBMS: Lecture 15", subject: "DBMS", start: "2026-09-13T09:00:00", end: "2026-09-13T13:00:00" },
+      { title: "DBMS: Lecture 16", subject: "DBMS", start: "2026-09-13T14:00:00", end: "2026-09-13T18:00:00" },
+      { title: "DBMS: Lecture 17", subject: "DBMS", start: "2026-09-19T09:00:00", end: "2026-09-19T13:00:00" },
+      { title: "DBMS: Lecture 18", subject: "DBMS", start: "2026-09-19T14:00:00", end: "2026-09-19T18:00:00" },
+      { title: "DBMS: Lecture 19", subject: "DBMS", start: "2026-09-20T09:00:00", end: "2026-09-20T13:00:00" },
+      { title: "DBMS: Lecture 20", subject: "DBMS", start: "2026-09-20T14:00:00", end: "2026-09-20T18:00:00" },
 
-      // Weekday Morning: Digital Logic
-      { title: "Digital Logic | Lecture 1", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-08-24T09:00:00", end: "2026-08-24T11:00:00" },
-      { title: "Digital Logic | Lecture 2", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-08-25T09:00:00", end: "2026-08-25T11:00:00" },
-      { title: "Digital Logic | Lecture 3", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-08-26T09:00:00", end: "2026-08-26T11:00:00" },
-      { title: "Digital Logic | Lecture 4", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-08-27T09:00:00", end: "2026-08-27T11:00:00" },
-      { title: "Digital Logic | Lecture 5", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-08-28T09:00:00", end: "2026-08-28T11:00:00" },
-      { title: "Digital Logic | Lecture 6", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-08-31T09:00:00", end: "2026-08-31T11:00:00" },
-      { title: "Digital Logic | Lecture 7", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-01T09:00:00", end: "2026-09-01T11:00:00" },
-      { title: "Digital Logic | Lecture 8", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-02T09:00:00", end: "2026-09-02T11:00:00" },
-      { title: "Digital Logic | Lecture 9", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-03T09:00:00", end: "2026-09-03T11:00:00" },
-      { title: "Digital Logic | Lecture 10", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-04T09:00:00", end: "2026-09-04T11:00:00" },
-      { title: "Digital Logic | Lecture 11", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-07T09:00:00", end: "2026-09-07T11:00:00" },
-      { title: "Digital Logic | Lecture 12", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-08T09:00:00", end: "2026-09-08T11:00:00" },
-      { title: "Digital Logic | Lecture 13", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-09T09:00:00", end: "2026-09-09T11:00:00" },
-      { title: "Digital Logic | Lecture 14", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-10T09:00:00", end: "2026-09-10T11:00:00" },
-      { title: "Digital Logic | Lecture 15", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-11T09:00:00", end: "2026-09-11T11:00:00" },
-      { title: "Digital Logic | Lecture 16", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-14T09:00:00", end: "2026-09-14T11:00:00" },
-      { title: "Digital Logic | Lecture 17", subject: "Digital Logic", mentor: "Chandan Jha Sir", start: "2026-09-15T09:00:00", end: "2026-09-15T11:00:00" },
+      // Digital Logic
+      { title: "Digital Logic | Lecture 1", subject: "Digital Logic", start: "2026-08-24T09:00:00", end: "2026-08-24T11:00:00" },
+      { title: "Digital Logic | Lecture 2", subject: "Digital Logic", start: "2026-08-25T09:00:00", end: "2026-08-25T11:00:00" },
+      { title: "Digital Logic | Lecture 3", subject: "Digital Logic", start: "2026-08-26T09:00:00", end: "2026-08-26T11:00:00" },
+      { title: "Digital Logic | Lecture 4", subject: "Digital Logic", start: "2026-08-27T09:00:00", end: "2026-08-27T11:00:00" },
+      { title: "Digital Logic | Lecture 5", subject: "Digital Logic", start: "2026-08-28T09:00:00", end: "2026-08-28T11:00:00" },
+      { title: "Digital Logic | Lecture 6", subject: "Digital Logic", start: "2026-08-31T09:00:00", end: "2026-08-31T11:00:00" },
+      { title: "Digital Logic | Lecture 7", subject: "Digital Logic", start: "2026-09-01T09:00:00", end: "2026-09-01T11:00:00" },
+      { title: "Digital Logic | Lecture 8", subject: "Digital Logic", start: "2026-09-02T09:00:00", end: "2026-09-02T11:00:00" },
+      { title: "Digital Logic | Lecture 9", subject: "Digital Logic", start: "2026-09-03T09:00:00", end: "2026-09-03T11:00:00" },
+      { title: "Digital Logic | Lecture 10", subject: "Digital Logic", start: "2026-09-04T09:00:00", end: "2026-09-04T11:00:00" },
+      { title: "Digital Logic | Lecture 11", subject: "Digital Logic", start: "2026-09-07T09:00:00", end: "2026-09-07T11:00:00" },
+      { title: "Digital Logic | Lecture 12", subject: "Digital Logic", start: "2026-09-08T09:00:00", end: "2026-09-08T11:00:00" },
+      { title: "Digital Logic | Lecture 13", subject: "Digital Logic", start: "2026-09-09T09:00:00", end: "2026-09-09T11:00:00" },
+      { title: "Digital Logic | Lecture 14", subject: "Digital Logic", start: "2026-09-10T09:00:00", end: "2026-09-10T11:00:00" },
+      { title: "Digital Logic | Lecture 15", subject: "Digital Logic", start: "2026-09-11T09:00:00", end: "2026-09-11T11:00:00" },
+      { title: "Digital Logic | Lecture 16", subject: "Digital Logic", start: "2026-09-14T09:00:00", end: "2026-09-14T11:00:00" },
+      { title: "Digital Logic | Lecture 17", subject: "Digital Logic", start: "2026-09-15T09:00:00", end: "2026-09-15T11:00:00" },
 
-      // Weekday Afternoon: Theory of Computation
-      { title: "Theory of Computation - Lecture 1", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-08-24T14:00:00", end: "2026-08-24T16:00:00" },
-      { title: "Theory of Computation - Lecture 2", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-08-25T14:00:00", end: "2026-08-25T16:00:00" },
-      { title: "Theory of Computation - Lecture 3", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-08-26T14:00:00", end: "2026-08-26T16:00:00" },
-      { title: "Theory of Computation - Lecture 4", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-08-27T14:00:00", end: "2026-08-27T16:00:00" },
-      { title: "Theory of Computation - Lecture 5", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-08-28T14:00:00", end: "2026-08-28T16:00:00" },
-      { title: "Theory of Computation - Lecture 6", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-08-31T14:00:00", end: "2026-08-31T16:00:00" },
-      { title: "Theory of Computation - Lecture 7", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-01T14:00:00", end: "2026-09-01T16:00:00" },
-      { title: "Theory of Computation - Lecture 8", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-02T14:00:00", end: "2026-09-02T16:00:00" },
-      { title: "Theory of Computation - Lecture 9", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-03T14:00:00", end: "2026-09-03T16:00:00" },
-      { title: "Theory of Computation - Lecture 10", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-04T14:00:00", end: "2026-09-04T16:00:00" },
-      { title: "Theory of Computation - Lecture 11", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-07T14:00:00", end: "2026-09-07T16:00:00" },
-      { title: "Theory of Computation - Lecture 12", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-08T14:00:00", end: "2026-09-08T16:00:00" },
-      { title: "Theory of Computation - Lecture 13", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-09T14:00:00", end: "2026-09-09T16:00:00" },
-      { title: "Theory of Computation - Lecture 14", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-10T14:00:00", end: "2026-09-10T16:00:00" },
-      { title: "Theory of Computation - Lecture 15", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-11T14:00:00", end: "2026-09-11T16:00:00" },
-      { title: "Theory of Computation - Lecture 16", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-14T14:00:00", end: "2026-09-14T16:00:00" },
-      { title: "Theory of Computation - Lecture 17", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-15T14:00:00", end: "2026-09-15T16:00:00" },
-      { title: "Theory of Computation - Lecture 18", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-16T14:00:00", end: "2026-09-16T16:00:00" },
-      { title: "Theory of Computation - Lecture 19", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-17T14:00:00", end: "2026-09-17T16:00:00" },
-      { title: "Theory of Computation - Lecture 20", subject: "Theory of Computation", mentor: "Devasane Mallesham Sir", start: "2026-09-18T14:00:00", end: "2026-09-18T16:00:00" }
+      // Theory of Computation
+      { title: "Theory of Computation - Lecture 1", subject: "Theory of Computation", start: "2026-08-24T14:00:00", end: "2026-08-24T16:00:00" },
+      { title: "Theory of Computation - Lecture 2", subject: "Theory of Computation", start: "2026-08-25T14:00:00", end: "2026-08-25T16:00:00" },
+      { title: "Theory of Computation - Lecture 3", subject: "Theory of Computation", start: "2026-08-26T14:00:00", end: "2026-08-26T16:00:00" },
+      { title: "Theory of Computation - Lecture 4", subject: "Theory of Computation", start: "2026-08-27T14:00:00", end: "2026-08-27T16:00:00" },
+      { title: "Theory of Computation - Lecture 5", subject: "Theory of Computation", start: "2026-08-28T14:00:00", end: "2026-08-28T16:00:00" },
+      { title: "Theory of Computation - Lecture 6", subject: "Theory of Computation", start: "2026-08-31T14:00:00", end: "2026-08-31T16:00:00" },
+      { title: "Theory of Computation - Lecture 7", subject: "Theory of Computation", start: "2026-09-01T14:00:00", end: "2026-09-01T16:00:00" },
+      { title: "Theory of Computation - Lecture 8", subject: "Theory of Computation", start: "2026-09-02T14:00:00", end: "2026-09-02T16:00:00" },
+      { title: "Theory of Computation - Lecture 9", subject: "Theory of Computation", start: "2026-09-03T14:00:00", end: "2026-09-03T16:00:00" },
+      { title: "Theory of Computation - Lecture 10", subject: "Theory of Computation", start: "2026-09-04T14:00:00", end: "2026-09-04T16:00:00" },
+      { title: "Theory of Computation - Lecture 11", subject: "Theory of Computation", start: "2026-09-07T14:00:00", end: "2026-09-07T16:00:00" },
+      { title: "Theory of Computation - Lecture 12", subject: "Theory of Computation", start: "2026-09-08T14:00:00", end: "2026-09-08T16:00:00" },
+      { title: "Theory of Computation - Lecture 13", subject: "Theory of Computation", start: "2026-09-09T14:00:00", end: "2026-09-09T16:00:00" },
+      { title: "Theory of Computation - Lecture 14", subject: "Theory of Computation", start: "2026-09-10T14:00:00", end: "2026-09-10T16:00:00" },
+      { title: "Theory of Computation - Lecture 15", subject: "Theory of Computation", start: "2026-09-11T14:00:00", end: "2026-09-11T16:00:00" },
+      { title: "Theory of Computation - Lecture 16", subject: "Theory of Computation", start: "2026-09-14T14:00:00", end: "2026-09-14T16:00:00" },
+      { title: "Theory of Computation - Lecture 17", subject: "Theory of Computation", start: "2026-09-15T14:00:00", end: "2026-09-15T16:00:00" },
+      { title: "Theory of Computation - Lecture 18", subject: "Theory of Computation", start: "2026-09-16T14:00:00", end: "2026-09-16T16:00:00" },
+      { title: "Theory of Computation - Lecture 19", subject: "Theory of Computation", start: "2026-09-17T14:00:00", end: "2026-09-17T16:00:00" },
+      { title: "Theory of Computation - Lecture 20", subject: "Theory of Computation", start: "2026-09-18T14:00:00", end: "2026-09-18T16:00:00" }
     ];
 
     // Sort chronologically
     schedule.sort((a, b) => new Date(a.start) - new Date(b.start));
 
     function formatTime(iso) {
-      return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
     }
 
     function formatDate(iso) {
-      return new Date(iso).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+      return new Date(iso).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+
+    // Cute interactive button logic
+    function sendHug(btn) {
+      const text = document.getElementById('hugText');
+      text.innerText = "Hug Sent! 🥰";
+      text.classList.remove('hidden');
+      
+      // Create floating heart
+      const heart = document.createElement('div');
+      heart.innerText = ['💖', '💕', '🧸', '✨'][Math.floor(Math.random() * 4)];
+      heart.className = 'heart-float text-4xl drop-shadow-md';
+      heart.style.left = (Math.random() * 60 + 20) + 'vw';
+      heart.style.bottom = '100px';
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 2000);
+      setTimeout(() => {
+        text.classList.add('hidden');
+        text.innerText = "Send Hug!";
+      }, 2500);
     }
 
     function updateStatus() {
@@ -137,67 +189,63 @@
       const badge = document.getElementById('statusBadge');
 
       if (activeClass) {
-        card.className = "p-5 rounded-2xl border transition-all duration-300 bg-rose-950/40 border-rose-800/60 flex items-center justify-between";
-        text.className = "text-xl font-bold mt-1 text-rose-400";
-        text.innerText = `In Class: ${activeClass.title}`;
-        subtext.innerText = `Busy until ${formatTime(activeClass.end)} (${activeClass.mentor})`;
-        badge.className = "h-4 w-4 rounded-full bg-rose-500 animate-ping";
+        // Babu is Busy styling
+        card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-indigo-950/90 to-purple-950/90 border-indigo-500/30 flex items-center justify-between shadow-lg shadow-indigo-900/20";
+        text.className = "text-2xl font-black mt-1 text-indigo-300";
+        text.innerText = "Babu is in class! 🤫";
+        subtext.innerText = `Studying ${activeClass.subject} until ${formatTime(activeClass.end)}.\nTalk to you soon! 💕`;
+        badge.className = "h-4 w-4 rounded-full bg-indigo-400 animate-ping shadow-[0_0_15px_rgba(129,140,248,0.8)]";
       } else {
-        card.className = "p-5 rounded-2xl border transition-all duration-300 bg-emerald-950/40 border-emerald-800/60 flex items-center justify-between";
-        text.className = "text-xl font-bold mt-1 text-emerald-400";
-        text.innerText = "Currently Free / Available";
+        // Babu is Free styling
+        card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-pink-950/80 to-rose-950/80 border-pink-500/40 flex items-center justify-between shadow-lg shadow-pink-900/20";
+        text.className = "text-2xl font-black mt-1 text-pink-400";
+        text.innerText = "Babu is FREE! 🥰";
         if (nextClass) {
-          subtext.innerText = `Next class: ${nextClass.title} on ${formatDate(nextClass.start)} at ${formatTime(nextClass.start)}`;
+          subtext.innerText = `Call him! His next class is at ${formatTime(nextClass.start)}.`;
         } else {
-          subtext.innerText = "No upcoming classes scheduled.";
+          subtext.innerText = "He has no more classes today! 💖";
         }
-        badge.className = "h-4 w-4 rounded-full bg-emerald-500";
+        badge.className = "h-4 w-4 rounded-full bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.8)]";
       }
     }
 
     function renderSchedule(filter = 'all') {
       const container = document.getElementById('scheduleContainer');
       container.innerHTML = '';
-      
       const now = new Date();
 
-      // First, only keep classes that haven't ended yet
-      let upcomingClasses = schedule.filter(item => new Date(item.end) >= now);
+      // Filter out past classes
+      let upcoming = schedule.filter(item => new Date(item.end) >= now);
 
-      // Then, apply the subject filter if one is selected
       if (filter !== 'all') {
-        upcomingClasses = upcomingClasses.filter(item => item.subject === filter);
+        upcoming = upcoming.filter(item => item.subject === filter);
       }
 
-      // If no classes match the filter/time, show a friendly message
-      if (upcomingClasses.length === 0) {
+      if (upcoming.length === 0) {
         container.innerHTML = `
-          <div class="text-center p-8 bg-slate-900 border border-slate-800/80 rounded-xl">
-            <p class="text-slate-400 font-medium">No upcoming classes to show here.</p>
+          <div class="text-center p-8 bg-slate-900/50 rounded-3xl border border-slate-800/80 border-dashed">
+            <span class="text-4xl block mb-2">🎉</span>
+            <p class="text-slate-400 font-medium">No upcoming classes for this subject!</p>
           </div>
         `;
         return;
       }
 
-      // Render the upcoming classes
-      upcomingClasses.forEach(item => {
-        const badgeColor = item.subject === 'DBMS' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' : 
-                           item.subject === 'Digital Logic' ? 'bg-sky-500/20 text-sky-300 border-sky-500/30' : 
-                           'bg-purple-500/20 text-purple-300 border-purple-500/30';
+      upcoming.forEach(item => {
+        const badgeColor = item.subject === 'DBMS' ? 'bg-amber-500/20 text-amber-400' : 
+                           item.subject === 'Digital Logic' ? 'bg-sky-500/20 text-sky-400' : 
+                           'bg-purple-500/20 text-purple-400';
 
         const card = `
-          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-700 transition">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <span class="text-xs px-2 py-0.5 rounded-full border font-medium ${badgeColor}">${item.subject}</span>
-                <span class="text-xs text-slate-400">${formatDate(item.start)}</span>
-              </div>
-              <div class="font-semibold text-white text-base">${item.title}</div>
-              <div class="text-xs text-slate-400">Mentor: ${item.mentor}</div>
+          <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800/80 flex items-center justify-between gap-2 shadow-sm">
+            <div class="space-y-1.5">
+              <span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${badgeColor}">${item.subject}</span>
+              <div class="font-bold text-slate-200 leading-tight">${item.title}</div>
+              <div class="text-xs font-semibold text-slate-500">${formatDate(item.start)}</div>
             </div>
-            <div class="text-right sm:text-right flex sm:flex-col justify-between items-center sm:items-end border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-800">
-              <div class="text-sm font-semibold text-slate-200">${formatTime(item.start)} – ${formatTime(item.end)}</div>
-              <div class="text-xs text-slate-500">${(new Date(item.end) - new Date(item.start)) / (1000 * 60)} Mins</div>
+            <div class="text-right">
+              <div class="text-sm font-extrabold text-white">${formatTime(item.start)}</div>
+              <div class="text-[10px] uppercase font-bold text-slate-500 mt-1 pb-1">to ${formatTime(item.end)}</div>
             </div>
           </div>
         `;
@@ -207,12 +255,11 @@
 
     function filterSchedule(category) {
       document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.className = "filter-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+        btn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all";
       });
-      // Find the button that was clicked and update its style
-      const activeBtn = Array.from(document.querySelectorAll('.filter-btn')).find(btn => btn.innerText.includes(category === 'Theory of Computation' ? 'TOC' : category === 'all' ? 'All' : category));
+      const activeBtn = Array.from(document.querySelectorAll('.filter-btn')).find(btn => btn.innerText.includes(category === 'Theory of Computation' ? 'TOC' : category === 'all' ? 'Everything' : category));
       if (activeBtn) {
-          activeBtn.className = "filter-btn px-4 py-1.5 rounded-full bg-indigo-600 text-white hover:bg-indigo-500 transition";
+          activeBtn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2.5 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all";
       }
       renderSchedule(category);
     }
@@ -222,14 +269,13 @@
     renderSchedule();
     setInterval(() => {
       updateStatus();
-      // Re-render the active filter so expired classes disappear automatically
-      const currentFilterText = document.querySelector('.bg-indigo-600').innerText;
+      const currentFilter = document.querySelector('.bg-pink-600').innerText;
       let filterParam = 'all';
-      if (currentFilterText.includes('Digital Logic')) filterParam = 'Digital Logic';
-      if (currentFilterText.includes('TOC')) filterParam = 'Theory of Computation';
-      if (currentFilterText.includes('DBMS')) filterParam = 'DBMS';
+      if (currentFilter.includes('Logic')) filterParam = 'Digital Logic';
+      if (currentFilter.includes('TOC')) filterParam = 'Theory of Computation';
+      if (currentFilter.includes('DBMS')) filterParam = 'DBMS';
       renderSchedule(filterParam);
-    }, 60000); // refresh status and lists every 60 seconds
+    }, 60000); 
   </script>
 </body>
 </html>
