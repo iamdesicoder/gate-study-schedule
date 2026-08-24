@@ -97,9 +97,14 @@
 
   <script>
     // ========================================================================
-    // ⚠️ PASTE YOUR COPIED GOOGLE APPS SCRIPT URL BETWEEN THE QUOTES BELOW ⚠️
+    // OBFUSCATED URL & CONFIG
     // ========================================================================
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxDX9LZyWaS9nM1Bkj7OQUEx_0pojjWxufyGn0vYkKW19EPKOC3HjGpE9Kldug9MCN-Pg/exec";
+    const _s1 = "https://script.google.com";
+    const _s2 = "/macros/s/";
+    const _s3 = "AKfycbxDX9LZyWaS9nM1Bkj7O";
+    const _s4 = "QUEx_0pojjWxufyGn0vYkKW19E";
+    const _s5 = "PKOC3HjGpE9Kldug9MCN-Pg/exec";
+    const SCRIPT_URL = _s1 + _s2 + _s3 + _s4 + _s5;
     
     let schedule = [];
 
@@ -189,13 +194,12 @@
     // --- DYNAMIC CONTENT ENGINE ---
     function updateDynamicContent() {
       const now = new Date();
-      // Calculate day of year to rotate through the 30 items
       const start = new Date(now.getFullYear(), 0, 0);
       const diff = now - start;
       const oneDay = 1000 * 60 * 60 * 24;
       const dayOfYear = Math.floor(diff / oneDay);
       
-      const index = dayOfYear % 30; // Cycles 0 to 29
+      const index = dayOfYear % 30; 
       const hour = now.getHours();
 
       let noteTitleStr = "Good Morning 💌";
@@ -251,7 +255,6 @@
       text.innerText = "Sent to Babu's Redmi! 📲";
       text.classList.remove('hidden');
       
-      // Floating hearts effect
       for(let i=0; i<3; i++) {
         setTimeout(() => {
           const heart = document.createElement('div');
@@ -264,9 +267,10 @@
         }, i * 200);
       }
 
-      // ADD YOUR WHATSAPP NUMBER BELOW (with country code, e.g., 918130503027 for India)
-      // Remove the '//' on the line below to enable WhatsApp redirect!
-      setTimeout(() => window.location.href = "https://wa.me/918130503027?text=Thinking+of+you!+Sending+a+hug!+💌", 1500);
+      // OBFUSCATED PHONE NUMBER REDIRECT
+      const hiddenNum = [57, 49, 56, 49, 51, 48, 53, 48, 51, 48, 50, 55].map(n => String.fromCharCode(n)).join('');
+      const waMessage = encodeURIComponent("Thinking of you! Sending a hug! 💌");
+      setTimeout(() => window.location.href = "https://wa.me/" + hiddenNum + "?text=" + waMessage, 1500);
 
       setTimeout(() => {
         text.classList.add('hidden');
