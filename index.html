@@ -72,12 +72,13 @@
       </div>
     </div>
 
-    <!-- Filter Buttons -->
+    <!-- Filter Buttons (ADDED "DOUBTS" BUTTON HERE) -->
     <div class="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 snap-x mt-2">
       <button onclick="filterSchedule('all')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all">Everything</button>
       <button onclick="filterSchedule('Digital Logic')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">Digital Logic</button>
       <button onclick="filterSchedule('Theory of Computation')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">TOC</button>
       <button onclick="filterSchedule('DBMS')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">DBMS</button>
+      <button onclick="filterSchedule('Doubt Session')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">Doubts</button>
     </div>
 
     <!-- Schedule List -->
@@ -356,8 +357,10 @@
       }
 
       upcoming.forEach(item => {
+        // ADDED EMERALD GREEN COLOR FOR DOUBT SESSIONS!
         const badgeColor = item.subject === 'DBMS' ? 'bg-amber-500/20 text-amber-400' : 
                            item.subject === 'Digital Logic' ? 'bg-sky-500/20 text-sky-400' : 
+                           item.subject === 'Doubt Session' ? 'bg-emerald-500/20 text-emerald-400' :
                            'bg-purple-500/20 text-purple-400';
 
         const card = `
@@ -381,7 +384,7 @@
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all";
       });
-      const activeBtn = Array.from(document.querySelectorAll('.filter-btn')).find(btn => btn.innerText.includes(category === 'Theory of Computation' ? 'TOC' : category === 'all' ? 'Everything' : category));
+      const activeBtn = Array.from(document.querySelectorAll('.filter-btn')).find(btn => btn.innerText.includes(category === 'Theory of Computation' ? 'TOC' : category === 'all' ? 'Everything' : category === 'Doubt Session' ? 'Doubts' : category));
       if (activeBtn) {
           activeBtn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all";
       }
@@ -405,6 +408,7 @@
       if (currentFilter.includes('Logic')) filterParam = 'Digital Logic';
       if (currentFilter.includes('TOC')) filterParam = 'Theory of Computation';
       if (currentFilter.includes('DBMS')) filterParam = 'DBMS';
+      if (currentFilter.includes('Doubts')) filterParam = 'Doubt Session';
       renderSchedule(filterParam);
     }, 60000); 
   </script>
