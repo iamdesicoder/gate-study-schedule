@@ -32,7 +32,7 @@
       <h1 class="text-3xl font-extrabold tracking-tight text-white">Is Babu Busy? 🧸</h1>
     </header>
 
-    <!-- 📝 THE DAILY SECRET NOTE (Hinglish / Metro Commute) -->
+    <!-- 📝 THE DAILY SECRET NOTE (Hinglish / Delhi-Noida Metro focused) -->
     <div class="relative overflow-hidden bg-gradient-to-r from-pink-900/40 to-rose-900/40 border border-pink-500/30 rounded-2xl p-4 shadow-lg shadow-pink-900/10">
       <div class="absolute top-0 left-0 w-1 h-full bg-pink-500"></div>
       <h3 id="noteTitle" class="text-xs font-bold text-pink-400 uppercase tracking-wider mb-1">Today's Note 💌</h3>
@@ -109,61 +109,61 @@
     
     let schedule = [];
 
-    // --- 30 DAYS OF MORNING NOTES (Hinglish/Delhi-Noida Metro focused) ---
+    // --- 30 DAYS OF MORNING NOTES (Authentic WhatsApp style) ---
     const morningNotes = [
       "Morning babu! Office time ho gaya uth jao ❤️", "Uth gaya main but neend aa rahi hai abhi bhi 😭",
-      "Good morning! Delhi se Noida ka daily dhakka shuru 😂", "Morning yaar. Mera padhne ka bilkul mann nahi hai aaj.",
-      "Wakey wakey. Aaj metro mein seat mili ya khade khade ja rahi ho?", "Uth jao! Have a good day at the office cutie.",
-      "Morning! Nasha utra neend ka? 😂 Jao jaldi ready ho jao.", "Good morning babu! Miss you already.",
-      "Morning! Office mein bore ho toh text karna mujhe.", "Uth gaya main. Chalo ab tu bhi uth ja jaldi se.",
-      "Hey you. Have a nice day! Mera dhyan padhai se zyada tujhpe hai lol.", "Good morning! Metro mein so mat jana varna seedha depot pohochogi 😂",
+      "Morning yaar. Delhi se Noida ka dhakka shuru 😂", "Morning. Mera padhne ka bilkul mann nahi hai aaj.",
+      "Uth gayi? Aaj metro me seat mili ya wahi same struggle? 😂", "Uth jao babu. Have a good day at work.",
+      "Nasha utra neend ka? 😂 Jao jaldi ready ho jao.", "Morning babu ❤️ Miss u already.",
+      "Office mein bore ho toh text karna mujhe.", "Uth gaya main. Tu bhi uth ja jaldi se.",
+      "Mera dhyan padhai se zyada tujhpe hai aaj lol.", "Metro mein so mat jana varna seedha depot 😂",
       "Morning yaar. Ek aur lamba din. Let's do this.", "Uth jao sleepyhead. Noida wait kar raha hai tumhara.",
-      "Good morning meri jaan ❤️ Take care today.", "Morning! Chai pi li? Don't skip breakfast.",
-      "Hey! Monday hai yaar, I know you hate it but u gotta go 😭", "Good morning! Jaldi ready ho jao varna train miss hogi.",
-      "Morning babu. Rajiv Chowk ya Blue line pe bheed se bachke rehna.", "Uth jao! Office jaate hue gaane sun lena ache se.",
-      "Morning! Dimag kharab mat karna office mein kisi pe 😂", "Hey cutie. Have a super productive day. Miss you.",
-      "Good morning! Mera class start hone wala hai 😭", "Morning yaar! Office poch ke ek text daal dena.",
-      "Uth gayi? Ya abhi bhi alarm snooze kar rahi hai? 😂", "Morning! Stay hydrated office ki AC mein.",
-      "Good morning! Aaj kya pehan rahi ho office ke liye?", "Morning babu! I'll be busy studying, text u in breaks ❤️",
-      "Hey! Have a safe commute. Miss you.", "Uth jao meri pyari! Din shuru ho gaya."
+      "Morning babu ❤️ Dhyan rakhna aaj apna.", "Chai pi li? Breakfast skip mat karna tu.",
+      "Monday hai yaar, I know u hate it but jana padega 😭", "Jaldi ready ho jao varna train miss hogi.",
+      "Rajiv Chowk pe bheed se bachke rehna aaj.", "Uth jao! Raste me gaane sun lena ache se.",
+      "Dimag kharab mat karna office mein kisi pe 😂", "Morning cutie. Miss you.",
+      "Mera class start hone wala hai yaar 😭", "Office poch ke ek text daal dena yaad se.",
+      "Uth gayi? Ya abhi bhi alarm snooze kar rahi hai? 😂", "AC mein paani peete rehna chup chap.",
+      "Aaj kya pehan rahi ho office ke liye?", "Main padhne ja raha, text u in breaks ❤️",
+      "Metro mein dhyan se jana babu, pohoch ke bata dena ❤️", "Chalo uth jao ab, office bhi jana hai."
     ];
 
     // --- 30 DAYS OF AFTERNOON NOTES (Lunch/Office breaks) ---
     const afternoonNotes = [
-      "Lunch kiya babu? Ya abhi bhi kaam kar rahi hai?", "Mera sir dard kar raha hai notes dekh dekh ke 😭",
-      "Office mein sab theek? Bas thoda aur time then u can come home.", "Lunch time! I hope aaj khana acha mila ho tumhe.",
+      "Lunch kiya babu? Ya abhi bhi kaam hi chal raha hai?", "Mera sir dard kar raha hai notes dekh dekh ke 😭",
+      "Office mein sab theek? Bas thoda aur time then u can come home.", "Lunch time! I hope aaj khana acha mila ho.",
       "Bohot neend aa rahi hai yaar mujhe padhte hue 😴", "Kya kar rahi hai? Free hui thodi der ke liye?",
-      "Lunch kar lena time pe, bhookhi mat rehna office mein.", "Half day done! Noida se dilli wapas aane ka countdown shuru ❤️",
-      "Main thak gaya yaar padh ke. Just took a 5 min break.", "Missing you. Office se free hoke call karna.",
-      "Bohot bore ho raha hu. Tumhara office kaisa chal raha hai?", "Lunch break! Don't look at screen while eating ok?",
-      "Kaam kaisa chal raha hai? Jyada thak toh nahi gayi?", "Mera mann kar raha hai bas so jau thodi der 😂",
-      "Hey cutie. Just checking in. Padhai chal rahi hai meri.", "Lunch ho gaya? Pani pi lena theek se.",
-      "Missing you yaar. Office se kab chhutti milegi tumhe aaj?", "Sirf tera text dekhne ke liye phone uthaya tha ❤️",
-      "Bohot padhna bacha hai abhi bhi 😭 kya karu main", "Office mein jyada stress mat lena. Chill rehna thoda.",
-      "Lunch time! Khana khao chup chap.", "Kaise chal raha hai din? I'm getting exhausted here.",
-      "Hey. Just dropping by to say I love you ❤️", "Aadha din toh nikal gaya, aur thoda bacha hai bas.",
-      "Lunch break done? Back to work / study now.", "Miss kar raha tha tujhe, socha bata du.",
+      "Lunch kar lena time pe, bhookhi mat rehna waha.", "Aadha din khatam! Dilli wapas aane ka countdown shuru ❤️",
+      "Main thak gaya yaar padh ke. Just took a 5 min break.", "Missing you. Office se free hoke call karna na.",
+      "Bohot bore ho raha hu. Tumhara kya scene hai?", "Lunch break! Phone side rakh ke khana kha lo pehle.",
+      "Kaam kaisa chal raha hai? Thakan toh nahi ho rahi?", "Mera mann kar raha hai bas so jau thodi der 😂",
+      "Just checking in. Padhai chal rahi hai meri idhar.", "Lunch ho gaya? Pani pi lena theek se.",
+      "Missing you yaar. Office se kab chhutti milegi aaj?", "Sirf tera text check karne ke liye phone uthaya tha ❤️",
+      "Bohot padhna bacha hai abhi bhi 😭 kya karu main", "Office mein jyada stress mat lena aaj. Chill rehna.",
+      "Lunch time! Khana khao chup chap jaake.", "Kaise chal raha hai din? I'm getting exhausted here.",
+      "Just thought of you ❤️", "Aadha din toh nikal gaya, aur thoda time bacha hai bas.",
+      "Lunch break done? Back to work now.", "Miss kar raha tha tujhe, socha bata du.",
       "Kaam mein jyada dub mat jana. Take a break 5 min ka.", "Lunch kar liya babu? I'm eating too.",
-      "Dimag kaam nahi kar raha mera ab. Need a break.", "Hey! Tell me what u had for lunch when we talk."
+      "Dimag kaam nahi kar raha mera ab. Need a break.", "Tell me what u had for lunch when we talk."
     ];
 
     // --- 30 DAYS OF EVENING NOTES (Post-office / Metro commute back) ---
     const eveningNotes = [
-      "Ghar pohochi? Tell me when u are free to talk.", "Bohot lamba din tha yaar aaj ka. So tired.",
-      "Office done? Metro mein seat mili dilli wapas aane ke liye?", "Sham ki chai time! Call me jab free ho jao.",
-      "Finally free! Kab baat karegi tu?", "Ghar jaake thoda rest kar lena theek se.",
+      "Ghar pohochi? Free hoke text karna.", "Bohot lamba din tha yaar aaj ka. So tired.",
+      "Office done? Metro mein seat mili dilli aane ke liye?", "Sham ki chai time! Call me jab free ho jao.",
+      "Finally free! Kab baat karegi tu?", "Ghar jaake thoda rest kar lena theek se pehle.",
       "Classes khatam meri. Waiting for you now ❤️", "Thak gaya hu bohot. Noida se aate aate tum bhi thak jaogi.",
-      "Hey babu. Ghar pohoch ke ek message kar dena.", "Din khatam finally. I just want to hear your voice.",
+      "Ghar pohoch ke ek message kar dena yaad se.", "Din khatam finally. Tumhari aawaz sunni hai bas.",
       "Ghar aa gayi? Ya abhi bhi blue line ki bheed mein dhakke kha rahi hai?", "Kya thakan wala din tha yaar 😭",
       "Evening cutie! Jaldi aao yaar baat karni hai.", "Office over! Dhyan se metro change karna.",
       "Main free ho gaya padhai se. Ab tumhara wait hai.", "Sham ho gayi aur mujhe tumhari yaad aa rahi hai.",
       "Ghar aa ke change karke thoda let jana. You must be tired.", "Finally! Aaj ka quota done. Padhai band.",
-      "Hey you! Kaisa tha aaj ka office ka din?", "Ghar pohochi? I'm missing my favorite person ❤️",
-      "Evening babu. Kuch khaya raste mein ya bhookhi hai?", "Main thak ke choor ho chuka hu. Need ur hugs.",
+      "Kaisa tha aaj ka office ka din?", "Ghar pohochi? I'm missing you ❤️",
+      "Kuch khaya raste mein ya bhookhi hai subah se?", "Main thak ke choor ho chuka hu. Need ur hugs.",
       "Metro mein kitni bheed hai aaj? Jaldi ghar pohocho.", "Sham ka time hamesha tera yaad dilata hai yaar.",
       "Free ho gayi? Main kabse wait kar raha hu.", "Ghar aa ke kuch acha sa kha lena.",
-      "Classes done for today! Ab time mera aur tumhara hai.", "Bohot padh liya aaj. Dimag ghoom raha hai.",
-      "Hey! Safely ghar pohochna. Love you.", "Finally day is over. Waiting for your call ❤️"
+      "Classes done for today! Ab time mera aur tumhara hai.", "Bohot padh liya aaj. Dimag ghoom raha hai mera.",
+      "Dhyan se ghar aana, pohoch ke text karna ❤️", "Finally day is over. Waiting for your call ❤️"
     ];
 
     // --- 30 DAYS OF DAYTIME CRAVINGS (Casual/Realistic) ---
@@ -310,10 +310,9 @@
         document.querySelector('#countdownContainer div:first-child').innerText = 'Waking Up In:';
         countdownTimer.innerText = formatCountdown(wakeUpTime - now);
         countdownTimer.className = "text-xl font-mono font-black tracking-tight text-blue-200";
-        return; // Don't check classes if sleeping
+        return; 
       }
 
-      // If not sleeping, check classes normally
       let activeClass = null;
       let nextClass = null;
 
@@ -418,12 +417,10 @@
     updateDynamicContent();
     fetchSchedule();
     
-    // Refresh countdown every 1 second
     setInterval(() => {
       if(schedule.length > 0) updateStatus();
     }, 1000); 
 
-    // Refresh schedule lists & dynamic notes every 1 minute
     setInterval(() => {
       updateDynamicContent();
       const currentFilter = document.querySelector('.bg-pink-600')?.innerText || 'all';
