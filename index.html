@@ -276,7 +276,7 @@
     // ========================================================================
     // ARCADE CONTROLLER
     // ========================================================================
-    let catchTimer = null; // Global timer for Catch game
+    let catchTimer = null; 
 
     function openArcade() {
       document.getElementById('gameModal').classList.remove('hidden');
@@ -296,7 +296,7 @@
         document.getElementById(id).classList.add('hidden');
         document.getElementById(id).classList.remove('flex');
       });
-      clearInterval(catchTimer); // Clear any active timers
+      clearInterval(catchTimer); 
       
       // Show selected view
       document.getElementById(viewId).classList.remove('hidden');
@@ -404,17 +404,20 @@
     }
 
     // ========================================================================
-    // GAME 3: CATCH THE KISS
+    // GAME 3: CATCH THE KISS (FIXED BUG)
     // ========================================================================
     let catchScore = 0, catchActiveIdx = -1, catchPlaying = false;
     function initCatch() {
       catchScore = 0; catchPlaying = true;
-      document.getElementById('catchScore').innerText = '0';
+      
+      // Fix: Re-create the score counter span FIRST so it's not missing on restart
       document.getElementById('catchMsg').innerHTML = `Score: <span id="catchScore" class="font-bold text-rose-200">0</span> / 10`;
+      
       clearInterval(catchTimer);
       renderCatch();
       catchTimer = setInterval(moveCatch, 800);
     }
+    
     function renderCatch() {
       const board = document.getElementById('catchBoard');
       board.innerHTML = '';
