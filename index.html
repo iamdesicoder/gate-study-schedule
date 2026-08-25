@@ -19,6 +19,8 @@
       0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
       100% { transform: translateY(-500px) scale(1.5) rotate(15deg); opacity: 0; }
     }
+    /* Simple flip animation classes */
+    .card-flip { transform: scale(1.05); }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased p-4 pb-32">
@@ -32,7 +34,7 @@
       <h1 class="text-3xl font-extrabold tracking-tight text-white">Is Babu Busy? 🧸</h1>
     </header>
 
-    <!-- 📝 THE DAILY SECRET NOTE (Hinglish / Delhi-Noida Metro focused) -->
+    <!-- 📝 THE DAILY SECRET NOTE -->
     <div class="relative overflow-hidden bg-gradient-to-r from-pink-900/40 to-rose-900/40 border border-pink-500/30 rounded-2xl p-4 shadow-lg shadow-pink-900/10">
       <div class="absolute top-0 left-0 w-1 h-full bg-pink-500"></div>
       <h3 id="noteTitle" class="text-xs font-bold text-pink-400 uppercase tracking-wider mb-1">Today's Note 💌</h3>
@@ -41,7 +43,7 @@
       </p>
     </div>
 
-    <!-- Real-time Status Card with Countdown -->
+    <!-- Real-time Status Card -->
     <div id="statusCard" class="p-6 rounded-3xl border transition-all duration-500 flex items-center justify-between relative overflow-hidden bg-slate-900 border-slate-800">
       <div class="relative z-10 w-full">
         <div class="flex justify-between items-start">
@@ -72,6 +74,11 @@
       </div>
     </div>
 
+    <!-- 🎮 MINI GAME BUTTON (NEW) -->
+    <button onclick="openGame()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-violet-900/40 to-fuchsia-900/40 border border-fuchsia-500/30 text-fuchsia-200 font-bold text-sm shadow-sm flex items-center justify-center gap-2 hover:bg-fuchsia-900/50 transition-all active:scale-95">
+      <span class="text-xl">🎮</span> Bored in Metro? Play a Game!
+    </button>
+
     <!-- Filter Buttons -->
     <div class="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 snap-x mt-2">
       <button onclick="filterSchedule('all')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all">Everything</button>
@@ -96,6 +103,22 @@
     <span id="hugText" class="font-bold pr-2 hidden transition-all">Send Hug!</span>
   </button>
 
+  <!-- 🎮 GAME MODAL OVERLAY (NEW) -->
+  <div id="gameModal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] hidden flex-col items-center justify-center p-4 transition-all">
+    <div class="bg-slate-900 border border-pink-500/30 rounded-3xl p-6 w-full max-w-sm relative shadow-2xl shadow-pink-900/20">
+      <button onclick="closeGame()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl h-8 w-8 flex items-center justify-center bg-slate-800 rounded-full">&times;</button>
+      <h2 class="text-xl font-black text-pink-400 text-center mb-1">Memory Match 🧸</h2>
+      <p id="gameMessage" class="text-xs text-center text-slate-400 mb-5">Match the pairs to win my heart! 💕</p>
+      
+      <!-- Game Grid -->
+      <div id="gameBoard" class="grid grid-cols-4 gap-3 mb-5">
+        <!-- Cards injected via JS -->
+      </div>
+      
+      <button onclick="initGame()" class="w-full py-3 rounded-xl bg-slate-800 text-slate-300 text-sm font-bold border border-slate-700 hover:bg-slate-700 active:scale-95 transition-all">Restart Game</button>
+    </div>
+  </div>
+
   <script>
     // ========================================================================
     // OBFUSCATED URL & CONFIG
@@ -109,7 +132,7 @@
     
     let schedule = [];
 
-    // --- 30 DAYS OF MORNING NOTES (Authentic WhatsApp style) ---
+    // --- 30 DAYS OF MORNING NOTES ---
     const morningNotes = [
       "Morning babu! Office time ho gaya uth jao ❤️", "Uth gaya main but neend aa rahi hai abhi bhi 😭",
       "Morning yaar. Delhi se Noida ka dhakka shuru 😂", "Morning. Mera padhne ka bilkul mann nahi hai aaj.",
@@ -128,7 +151,7 @@
       "Metro mein dhyan se jana babu, pohoch ke bata dena ❤️", "Chalo uth jao ab, office bhi jana hai."
     ];
 
-    // --- 30 DAYS OF AFTERNOON NOTES (Lunch/Office breaks) ---
+    // --- 30 DAYS OF AFTERNOON NOTES ---
     const afternoonNotes = [
       "Lunch kiya babu? Ya abhi bhi kaam hi chal raha hai?", "Mera sir dard kar raha hai notes dekh dekh ke 😭",
       "Office mein sab theek? Bas thoda aur time then u can come home.", "Lunch time! I hope aaj khana acha mila ho.",
@@ -147,7 +170,7 @@
       "Dimag kaam nahi kar raha mera ab. Need a break.", "Tell me what u had for lunch when we talk."
     ];
 
-    // --- 30 DAYS OF EVENING NOTES (Post-office / Metro commute back) ---
+    // --- 30 DAYS OF EVENING NOTES ---
     const eveningNotes = [
       "Ghar pohochi? Free hoke text karna.", "Bohot lamba din tha yaar aaj ka. So tired.",
       "Office done? Metro mein seat mili dilli aane ke liye?", "Sham ki chai time! Call me jab free ho jao.",
@@ -166,7 +189,6 @@
       "Dhyan se ghar aana, pohoch ke text karna ❤️", "Finally day is over. Waiting for your call ❤️"
     ];
 
-    // --- 30 DAYS OF DAYTIME CRAVINGS (Casual/Realistic) ---
     const dayCravings = [
       "Ek strong chai aur 10 min ki neend", "Bahar se chole bhature order karne ka mann hai 😭", "Mummy ke hath ka khana",
       "Kuch spicy khane ka mann kar raha hai", "Thandi cold coffee chahiye yaar", "Bohot bhookh lagi hai but class hai abhi",
@@ -180,7 +202,6 @@
       "Ek achi si movie dekhne ka mann hai tumhare sath", "Tumse baat karne ki craving ❤️"
     ];
 
-    // --- 30 DAYS OF NIGHTTIME CRAVINGS (Casual/Realistic) ---
     const nightCravings = [
       "Late night maggi supremacy 🍜", "Ice cream at 12 am is a vibe", "Need to sleep but scrolling reels 😭",
       "Tumhari aawaz sunke sona hai", "Kuch meetha bacha hai kya fridge mein?", "Craving late night talks with you ❤️",
@@ -194,7 +215,98 @@
       "Late night parathe", "Thandi hawa aur tumhara hath", "Goodnight bol ke 2 ghante aur baat karna 😂"
     ];
 
-    // --- DYNAMIC CONTENT ENGINE ---
+    // ========================================================================
+    // GAME LOGIC (MEMORY MATCH)
+    // ========================================================================
+    const gameEmojis = ['🧸', '💖', '💌', '🌹', '🍫', '☕'];
+    let gameCards = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let lockBoard = false;
+
+    function openGame() {
+      document.getElementById('gameModal').classList.remove('hidden');
+      document.getElementById('gameModal').classList.add('flex');
+      initGame();
+    }
+
+    function closeGame() {
+      document.getElementById('gameModal').classList.add('hidden');
+      document.getElementById('gameModal').classList.remove('flex');
+    }
+
+    function initGame() {
+      gameCards = [...gameEmojis, ...gameEmojis];
+      gameCards.sort(() => 0.5 - Math.random()); // Shuffle
+      
+      const board = document.getElementById('gameBoard');
+      board.innerHTML = '';
+      matchedPairs = 0;
+      flippedCards = [];
+      lockBoard = false;
+      document.getElementById('gameMessage').innerText = "Match the pairs to win my heart! 💕";
+      document.getElementById('gameMessage').className = "text-xs text-center text-slate-400 mb-5";
+
+      gameCards.forEach((emoji, index) => {
+        const card = document.createElement('div');
+        card.className = "h-16 bg-slate-800 border border-slate-700 rounded-xl flex items-center justify-center text-3xl cursor-pointer transition-all duration-300 shadow-sm active:scale-95";
+        card.dataset.emoji = emoji;
+        card.innerText = '❓';
+        card.onclick = () => flipCard(card);
+        board.appendChild(card);
+      });
+    }
+
+    function flipCard(card) {
+      if (lockBoard || card.innerText !== '❓' || flippedCards.includes(card)) return;
+
+      card.innerText = card.dataset.emoji;
+      card.classList.add('bg-pink-900/60', 'border-pink-500/50', 'card-flip');
+      card.classList.remove('bg-slate-800', 'border-slate-700');
+      
+      flippedCards.push(card);
+
+      if (flippedCards.length === 2) {
+        lockBoard = true;
+        checkForMatch();
+      }
+    }
+
+    function checkForMatch() {
+      const [card1, card2] = flippedCards;
+      
+      if (card1.dataset.emoji === card2.dataset.emoji) {
+        matchedPairs++;
+        flippedCards = [];
+        lockBoard = false;
+        
+        // Remove animation class after a sec so it sits flat
+        setTimeout(() => {
+          card1.classList.remove('card-flip');
+          card2.classList.remove('card-flip');
+        }, 300);
+
+        if (matchedPairs === gameEmojis.length) {
+          document.getElementById('gameMessage').innerText = "Yay! You won! I love you! ❤️🎉";
+          document.getElementById('gameMessage').className = "text-sm font-bold text-center text-emerald-400 mb-5 animate-pulse";
+        }
+      } else {
+        setTimeout(() => {
+          card1.innerText = '❓';
+          card2.innerText = '❓';
+          card1.classList.remove('bg-pink-900/60', 'border-pink-500/50', 'card-flip');
+          card1.classList.add('bg-slate-800', 'border-slate-700');
+          card2.classList.remove('bg-pink-900/60', 'border-pink-500/50', 'card-flip');
+          card2.classList.add('bg-slate-800', 'border-slate-700');
+          flippedCards = [];
+          lockBoard = false;
+        }, 800); // Hide after 0.8s
+      }
+    }
+
+    // ========================================================================
+    // MAIN APP LOGIC
+    // ========================================================================
     function updateDynamicContent() {
       const now = new Date();
       const start = new Date(now.getFullYear(), 0, 0);
@@ -270,7 +382,6 @@
         }, i * 200);
       }
 
-      // OBFUSCATED PHONE NUMBER REDIRECT
       const hiddenNum = [57, 49, 56, 49, 51, 48, 53, 48, 51, 48, 50, 55].map(n => String.fromCharCode(n)).join('');
       const waMessage = encodeURIComponent("Thinking of you! Sending a hug! 💌");
       setTimeout(() => window.location.href = "https://wa.me/" + hiddenNum + "?text=" + waMessage, 1500);
@@ -294,7 +405,7 @@
       const countdownContainer = document.getElementById('countdownContainer');
       const countdownTimer = document.getElementById('countdownTimer');
 
-      // NEW FEATURE: SLEEPING STATUS (11 PM to 7 AM)
+      // SLEEPING STATUS (11 PM to 7 AM)
       if (hour >= 23 || hour < 7) {
         let wakeUpTime = new Date(now);
         wakeUpTime.setHours(7, 0, 0, 0);
