@@ -74,9 +74,9 @@
       </div>
     </div>
 
-    <!-- 🎮 MINI GAME BUTTON (NEW) -->
+    <!-- 🎮 DYNAMIC MINI GAME BUTTON -->
     <button onclick="openGame()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-violet-900/40 to-fuchsia-900/40 border border-fuchsia-500/30 text-fuchsia-200 font-bold text-sm shadow-sm flex items-center justify-center gap-2 hover:bg-fuchsia-900/50 transition-all active:scale-95">
-      <span class="text-xl">🎮</span> Bored in Metro? Play a Game!
+      <span class="text-xl">🎮</span> <span id="gameBtnText">Play a quick game!</span>
     </button>
 
     <!-- Filter Buttons -->
@@ -103,7 +103,7 @@
     <span id="hugText" class="font-bold pr-2 hidden transition-all">Send Hug!</span>
   </button>
 
-  <!-- 🎮 GAME MODAL OVERLAY (NEW) -->
+  <!-- 🎮 GAME MODAL OVERLAY -->
   <div id="gameModal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] hidden flex-col items-center justify-center p-4 transition-all">
     <div class="bg-slate-900 border border-pink-500/30 rounded-3xl p-6 w-full max-w-sm relative shadow-2xl shadow-pink-900/20">
       <button onclick="closeGame()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl h-8 w-8 flex items-center justify-center bg-slate-800 rounded-full">&times;</button>
@@ -280,7 +280,6 @@
         flippedCards = [];
         lockBoard = false;
         
-        // Remove animation class after a sec so it sits flat
         setTimeout(() => {
           card1.classList.remove('card-flip');
           card2.classList.remove('card-flip');
@@ -300,7 +299,7 @@
           card2.classList.add('bg-slate-800', 'border-slate-700');
           flippedCards = [];
           lockBoard = false;
-        }, 800); // Hide after 0.8s
+        }, 800);
       }
     }
 
@@ -316,10 +315,14 @@
       
       const index = dayOfYear % 30; 
       const hour = now.getHours();
+      const dayOfWeek = now.getDay();
+      const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
 
       let noteTitleStr = "Good Morning 💌";
       let noteStr = morningNotes[index];
+      let gamePromptStr = "Play a quick game! 🎮";
       
+      // Notes & Game text logic based on time
       if (hour >= 12 && hour < 17) {
         noteTitleStr = "Good Afternoon 💌";
         noteStr = afternoonNotes[index];
@@ -328,11 +331,32 @@
         noteStr = eveningNotes[index];
       }
 
+      // Dynamic Game Button Text
+      if (isWeekend) {
+        const weekendTexts = ["Lazy weekend? Play a game!", "Weekend vibes! Match these!", "Bored at home? Play a game!", "Chilling? Play a quick match!"];
+        gamePromptStr = weekendTexts[index % weekendTexts.length];
+      } else {
+        if (hour >= 7 && hour < 11) {
+          const morningTexts = ["Bored in metro? Play a Game!", "Blue line traffic? Play this!", "Delhi to Noida commute? Play!", "Need a metro distraction?"];
+          gamePromptStr = morningTexts[index % morningTexts.length];
+        } else if (hour >= 11 && hour < 17) {
+          const officeTexts = ["Lunch break? Play a quick game!", "Bored at office? Match these!", "Taking a 5-min break? Play!", "Manager nahi dekh raha? Play! 😂"];
+          gamePromptStr = officeTexts[index % officeTexts.length];
+        } else if (hour >= 17 && hour < 21) {
+          const eveningTexts = ["Heading back home? Play this!", "Metro rush hour? Play a game!", "Tired from work? Relax with this!", "Commuting back? Play a game!"];
+          gamePromptStr = eveningTexts[index % eveningTexts.length];
+        } else {
+          const nightTexts = ["Chilling in bed? Play a quick game!", "Late night boredom? Play!", "Can't sleep? Match these!", "Relax before sleep! Play!"];
+          gamePromptStr = nightTexts[index % nightTexts.length];
+        }
+      }
+
       let cravingStr = (hour < 17) ? dayCravings[index] : nightCravings[index];
 
       document.getElementById("noteTitle").innerText = noteTitleStr;
       document.getElementById("noteText").innerText = `"${noteStr}"`;
       document.getElementById("cravingText").innerText = cravingStr;
+      document.getElementById("gameBtnText").innerText = gamePromptStr;
     }
 
     async function fetchSchedule() {
