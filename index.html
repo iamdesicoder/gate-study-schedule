@@ -24,20 +24,20 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased p-4 pb-32">
   <div class="max-w-md mx-auto space-y-5 mt-2">
     
-    <!-- Cute Header -->
+    <!-- Header -->
     <header class="text-center space-y-1">
       <div class="inline-block bg-pink-500/20 text-pink-300 px-4 py-1 rounded-full text-[10px] font-extrabold tracking-widest mb-1">
-        FOR MY FAVORITE PERSON ❤️
+        JUST FOR YOU ❤️
       </div>
       <h1 class="text-3xl font-extrabold tracking-tight text-white">Is Babu Busy? 🧸</h1>
     </header>
 
-    <!-- 📝 THE DAILY SECRET NOTE (Automated 3x a day!) -->
+    <!-- 📝 THE DAILY SECRET NOTE (Hinglish / Metro Commute) -->
     <div class="relative overflow-hidden bg-gradient-to-r from-pink-900/40 to-rose-900/40 border border-pink-500/30 rounded-2xl p-4 shadow-lg shadow-pink-900/10">
       <div class="absolute top-0 left-0 w-1 h-full bg-pink-500"></div>
-      <h3 id="noteTitle" class="text-xs font-bold text-pink-400 uppercase tracking-wider mb-1">Today's Secret Note 💌</h3>
+      <h3 id="noteTitle" class="text-xs font-bold text-pink-400 uppercase tracking-wider mb-1">Today's Note 💌</h3>
       <p id="noteText" class="text-sm font-medium text-pink-100 italic leading-snug transition-all duration-300">
-        "Loading a sweet message for you..."
+        "Loading..."
       </p>
     </div>
 
@@ -53,7 +53,7 @@
             <div id="statusBadge" class="h-3 w-3 rounded-full bg-slate-500 animate-pulse"></div>
           </div>
         </div>
-        <div id="statusSubtext" class="text-sm mt-1 font-medium text-slate-300">Syncing with Babu's calendar...</div>
+        <div id="statusSubtext" class="text-sm mt-1 font-medium text-slate-300">Syncing...</div>
         
         <!-- ⏳ Countdown Timer -->
         <div id="countdownContainer" class="mt-4 pt-3 border-t border-white/10 hidden">
@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <!-- 🍕 CRAVINGS WIDGET (Automated 2x a day!) -->
+    <!-- 🍕 CRAVINGS WIDGET -->
     <div class="flex items-center gap-3 bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 px-4 shadow-sm">
       <div class="text-2xl">🤤</div>
       <div>
@@ -72,7 +72,7 @@
       </div>
     </div>
 
-    <!-- Filter Buttons (ADDED "DOUBTS" BUTTON HERE) -->
+    <!-- Filter Buttons -->
     <div class="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 snap-x mt-2">
       <button onclick="filterSchedule('all')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all">Everything</button>
       <button onclick="filterSchedule('Digital Logic')" class="filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all">Digital Logic</button>
@@ -109,87 +109,89 @@
     
     let schedule = [];
 
-    // --- 30 DAYS OF MORNING NOTES ---
+    // --- 30 DAYS OF MORNING NOTES (Hinglish/Delhi-Noida Metro focused) ---
     const morningNotes = [
-      "Good morning beautiful! Starting my day thinking of you. 💕", "Wakey wakey! Babu is hitting the books, but you're on my mind. 📚",
-      "Morning cutie! Hope you slept well. Can't wait to hear your voice later! 🥰", "Good morning! Just a reminder that you're my favorite distraction. 🧸",
-      "Rise and shine! The only thing better than morning coffee is you. ☕", "Morning love! Let's conquer today so we can talk tonight! 💖",
-      "Good morning beautiful! Wishing I could start my day with a hug from you. ✨", "Wake up cutie! Babu's lectures are starting but my heart is with you. ❤️",
-      "Morning! Smile big today, it's my favorite thing in the world. 😊", "Good morning! Already counting down the hours until I see you. ⏳",
-      "Hey you! Have the best morning ever. I'm so lucky to have you. 💕", "Morning! Sending you a virtual forehead kiss to start your day. 💌",
-      "Good morning gorgeous! Go crush it today! 💪", "Wake up sleepyhead! I miss you already. 🧸", "Morning! You are the best part of my every day. 🌅",
-      "Good morning! Just dropping a quick note to say I love you. ❤️", "Rise and shine! The world is better with you in it. 🌍",
-      "Morning cutie! Let's both have a super productive day today. 📚", "Good morning! Just wanted to make you smile early today. 🥰",
-      "Wakey wakey! Babu is missing you so much right now! 💕", "Morning love! You're my motivation to study hard today. 🎯",
-      "Good morning! Remember to drink water and eat something yummy! 💧", "Hey beautiful! Hope your day is as amazing as you are. ✨",
-      "Morning! Thinking about your smile while I read these notes. 📖", "Good morning cutie! Big hugs to start your day. 🫂",
-      "Rise and shine! Can't wait to catch up with you later today. 📞", "Morning! You're the first thing on my mind today, as always. ❤️",
-      "Good morning! Wishing you a day full of happiness and zero stress. 🌸", "Wake up beautiful! Babu loves you! 💕", "Morning! Let's make today a great day. Love you! 🥰"
+      "Morning babu! Office time ho gaya uth jao ❤️", "Uth gaya main but neend aa rahi hai abhi bhi 😭",
+      "Good morning! Delhi se Noida ka daily dhakka shuru 😂", "Morning yaar. Mera padhne ka bilkul mann nahi hai aaj.",
+      "Wakey wakey. Aaj metro mein seat mili ya khade khade ja rahi ho?", "Uth jao! Have a good day at the office cutie.",
+      "Morning! Nasha utra neend ka? 😂 Jao jaldi ready ho jao.", "Good morning babu! Miss you already.",
+      "Morning! Office mein bore ho toh text karna mujhe.", "Uth gaya main. Chalo ab tu bhi uth ja jaldi se.",
+      "Hey you. Have a nice day! Mera dhyan padhai se zyada tujhpe hai lol.", "Good morning! Metro mein so mat jana varna seedha depot pohochogi 😂",
+      "Morning yaar. Ek aur lamba din. Let's do this.", "Uth jao sleepyhead. Noida wait kar raha hai tumhara.",
+      "Good morning meri jaan ❤️ Take care today.", "Morning! Chai pi li? Don't skip breakfast.",
+      "Hey! Monday hai yaar, I know you hate it but u gotta go 😭", "Good morning! Jaldi ready ho jao varna train miss hogi.",
+      "Morning babu. Rajiv Chowk ya Blue line pe bheed se bachke rehna.", "Uth jao! Office jaate hue gaane sun lena ache se.",
+      "Morning! Dimag kharab mat karna office mein kisi pe 😂", "Hey cutie. Have a super productive day. Miss you.",
+      "Good morning! Mera class start hone wala hai 😭", "Morning yaar! Office poch ke ek text daal dena.",
+      "Uth gayi? Ya abhi bhi alarm snooze kar rahi hai? 😂", "Morning! Stay hydrated office ki AC mein.",
+      "Good morning! Aaj kya pehan rahi ho office ke liye?", "Morning babu! I'll be busy studying, text u in breaks ❤️",
+      "Hey! Have a safe commute. Miss you.", "Uth jao meri pyari! Din shuru ho gaya."
     ];
 
-    // --- 30 DAYS OF AFTERNOON NOTES ---
+    // --- 30 DAYS OF AFTERNOON NOTES (Lunch/Office breaks) ---
     const afternoonNotes = [
-      "Halfway through the day! Taking a tiny break just to miss you. ☕", "Lunchtime! Hope you're eating well. Study grind is still on! 💻",
-      "Afternoon slump... wishing I was napping next to you instead of studying! 😴", "Just finished a heavy lecture. Your smile would make this 100x better right now! ❤️",
-      "Afternoon cutie! Just checking in to see how my favorite person is doing. 🥰", "Lunch break! Eating food but craving your hugs. 🧸",
-      "The day is dragging, but thinking of you keeps me going! 💪", "Hey you! Take a break if you need it. I'm proud of you! ✨",
-      "Afternoon! Tell me what you had for lunch when we talk later! 🍕", "Just a quick mid-day reminder that you are amazing. 💕",
-      "Hey beautiful! Hope the second half of your day goes by fast. ⏳", "Afternoon! I'm buried in notes, rescue me! 📚",
-      "Taking a 5-minute breather just to send you this virtual hug. 🫂", "Lunchtime! Don't forget to rest your eyes for a bit today. 👀",
-      "Afternoon cutie! Missing your voice right about now. 📞", "Half the day is done! We are one step closer to calling each other tonight. 🌙",
-      "Hey! Just looking at your picture to get me through this next lecture. ❤️", "Afternoon! Hope nobody is stressing you out today! 😤",
-      "Lunch break! Wish we were grabbing food together right now. 🍔", "Hey beautiful! Keep smiling, you're doing great today. 💕",
-      "Afternoon! Babu is working hard, hope you are having a good day! 💻", "Just a quick note to say I appreciate you so much. 🥰",
-      "Afternoon check-in! Did you drink enough water today? 💧", "Hey cutie! Sending you some mid-day energy! ⚡",
-      "Lunchtime! I'd trade this meal for a date with you any day. 🍝", "Afternoon! The sun is shining but you're still brighter. ✨",
-      "Hey! Just wanted to interrupt your day to say I miss you. 🧸", "Halfway there! Keep going beautiful. ❤️",
-      "Afternoon! Just daydreaming about our next date. 💭", "Hey you! Have a great afternoon. Talk to you soon! 💕"
+      "Lunch kiya babu? Ya abhi bhi kaam kar rahi hai?", "Mera sir dard kar raha hai notes dekh dekh ke 😭",
+      "Office mein sab theek? Bas thoda aur time then u can come home.", "Lunch time! I hope aaj khana acha mila ho tumhe.",
+      "Bohot neend aa rahi hai yaar mujhe padhte hue 😴", "Kya kar rahi hai? Free hui thodi der ke liye?",
+      "Lunch kar lena time pe, bhookhi mat rehna office mein.", "Half day done! Noida se dilli wapas aane ka countdown shuru ❤️",
+      "Main thak gaya yaar padh ke. Just took a 5 min break.", "Missing you. Office se free hoke call karna.",
+      "Bohot bore ho raha hu. Tumhara office kaisa chal raha hai?", "Lunch break! Don't look at screen while eating ok?",
+      "Kaam kaisa chal raha hai? Jyada thak toh nahi gayi?", "Mera mann kar raha hai bas so jau thodi der 😂",
+      "Hey cutie. Just checking in. Padhai chal rahi hai meri.", "Lunch ho gaya? Pani pi lena theek se.",
+      "Missing you yaar. Office se kab chhutti milegi tumhe aaj?", "Sirf tera text dekhne ke liye phone uthaya tha ❤️",
+      "Bohot padhna bacha hai abhi bhi 😭 kya karu main", "Office mein jyada stress mat lena. Chill rehna thoda.",
+      "Lunch time! Khana khao chup chap.", "Kaise chal raha hai din? I'm getting exhausted here.",
+      "Hey. Just dropping by to say I love you ❤️", "Aadha din toh nikal gaya, aur thoda bacha hai bas.",
+      "Lunch break done? Back to work / study now.", "Miss kar raha tha tujhe, socha bata du.",
+      "Kaam mein jyada dub mat jana. Take a break 5 min ka.", "Lunch kar liya babu? I'm eating too.",
+      "Dimag kaam nahi kar raha mera ab. Need a break.", "Hey! Tell me what u had for lunch when we talk."
     ];
 
-    // --- 30 DAYS OF EVENING NOTES ---
+    // --- 30 DAYS OF EVENING NOTES (Post-office / Metro commute back) ---
     const eveningNotes = [
-      "Good evening my love! Almost done with classes for today. 🌙", "The sun is setting and I'm just here missing my favorite person. ✨",
-      "Wrapping up my notes! Can't wait to call you and tell you about my day. 📞", "Evening cutie! Sending you a massive virtual hug to end your day right! 💌",
-      "Hey beautiful! Hope your day was amazing. Let's relax now. 🧸", "Evening! I am so ready to just hear your voice. ❤️",
-      "The best part of my day is coming up... talking to you! 🥰", "Evening love! Go rest up, you did great today. 🛋️",
-      "Just closing my books. You're my reward at the end of a long day. 📚", "Good evening! Let's watch something together later? 🍿",
-      "Evening cutie! What's for dinner? (Besides me missing you) 🍝", "The day is finally over! So glad I get to end it with you. 💕",
-      "Evening! Wishing we were cuddling right now instead of being apart. 🫂", "Hey beautiful! Get comfy, grab some food, and let's talk soon. 🌙",
-      "Good evening! I hope you're smiling right now. 😊", "Wrapping things up! You're the only thing on my mind tonight. ❤️",
-      "Evening! I missed you so much today. Tell me everything! 📞", "Hey cutie! The stars are out, but I'm just looking at your photos. ✨",
-      "Good evening! Let's leave today's stress behind and just chill. 😌", "Evening love! Babu is tired but never too tired for you. 🧸",
-      "Hey! I hope you have a relaxing night. You deserve it. 💕", "Evening! Sending you all my love before the day ends. 💌",
-      "Good evening beautiful! Can't wait to hear your laugh. 🥰", "The day is done! Time for my favorite person in the world. 🌍",
-      "Evening! Make sure you eat a good dinner tonight! 🍕", "Hey cutie! Just wanted to say I'm so incredibly proud of you. ❤️",
-      "Good evening! I'm officially clocking out. You have my full attention. ⏱️", "Evening love! Let's talk until we fall asleep tonight. 😴",
-      "Hey beautiful! Just counting the minutes until I can call you. ⏳", "Good evening! Sleep well later and dream of me! 💕"
+      "Ghar pohochi? Tell me when u are free to talk.", "Bohot lamba din tha yaar aaj ka. So tired.",
+      "Office done? Metro mein seat mili dilli wapas aane ke liye?", "Sham ki chai time! Call me jab free ho jao.",
+      "Finally free! Kab baat karegi tu?", "Ghar jaake thoda rest kar lena theek se.",
+      "Classes khatam meri. Waiting for you now ❤️", "Thak gaya hu bohot. Noida se aate aate tum bhi thak jaogi.",
+      "Hey babu. Ghar pohoch ke ek message kar dena.", "Din khatam finally. I just want to hear your voice.",
+      "Ghar aa gayi? Ya abhi bhi blue line ki bheed mein dhakke kha rahi hai?", "Kya thakan wala din tha yaar 😭",
+      "Evening cutie! Jaldi aao yaar baat karni hai.", "Office over! Dhyan se metro change karna.",
+      "Main free ho gaya padhai se. Ab tumhara wait hai.", "Sham ho gayi aur mujhe tumhari yaad aa rahi hai.",
+      "Ghar aa ke change karke thoda let jana. You must be tired.", "Finally! Aaj ka quota done. Padhai band.",
+      "Hey you! Kaisa tha aaj ka office ka din?", "Ghar pohochi? I'm missing my favorite person ❤️",
+      "Evening babu. Kuch khaya raste mein ya bhookhi hai?", "Main thak ke choor ho chuka hu. Need ur hugs.",
+      "Metro mein kitni bheed hai aaj? Jaldi ghar pohocho.", "Sham ka time hamesha tera yaad dilata hai yaar.",
+      "Free ho gayi? Main kabse wait kar raha hu.", "Ghar aa ke kuch acha sa kha lena.",
+      "Classes done for today! Ab time mera aur tumhara hai.", "Bohot padh liya aaj. Dimag ghoom raha hai.",
+      "Hey! Safely ghar pohochna. Love you.", "Finally day is over. Waiting for your call ❤️"
     ];
 
-    // --- 30 DAYS OF DAYTIME CRAVINGS ---
+    // --- 30 DAYS OF DAYTIME CRAVINGS (Casual/Realistic) ---
     const dayCravings = [
-      "A plate of homemade Chilla and Paneer 🥞", "A huge cup of cold coffee ☕", "Just a quick 5-minute break to hear your voice 📞",
-      "Something spicy and nice! Maybe some street food 🌶️", "A massive slice of pizza 🍕", "A sweet hug from you right now 🫂",
-      "A cold iced tea to beat this study heat 🍹", "Some momos with that extra spicy chutney 🥟", "A quick 20-minute power nap 😴",
-      "Your beautiful smile! 🥰", "A thick chocolate milkshake 🥤", "A plate of chole bhature 🍛", "To hold your hand while I study 🤝",
-      "Some crispy french fries 🍟", "A long drive with you and some good music 🚗", "A fresh fruit smoothie 🍓",
-      "Some buttery pav bhaji 🍞", "Just to see your face for 2 minutes 🥺", "A giant plate of nachos 🧀",
-      "A cold glass of nimbu pani 🍋", "A big, warm hug from my favorite person 🧸", "Some spicy paneer tikka 🍢",
-      "A quick break to text you 💌", "A massive burger with extra cheese 🍔", "To skip class and go on a date with you 🏃‍♂️",
-      "A hot cup of chai and some biscuits ☕", "Some crispy spring rolls 🌯", "Your attention! 👀", "A sweet pastry from a bakery 🍰", "Just to be sitting next to you right now 💕"
+      "Ek strong chai aur 10 min ki neend", "Bahar se chole bhature order karne ka mann hai 😭", "Mummy ke hath ka khana",
+      "Kuch spicy khane ka mann kar raha hai", "Thandi cold coffee chahiye yaar", "Bohot bhookh lagi hai but class hai abhi",
+      "Samosa mil jaye toh maza aa jaye", "Tumse milne ki craving ho rahi hai ❤️", "Momos with extra spicy wali chatni",
+      "Bas ek power nap mil jaye 😴", "Maggi banake khane ka aalas aa raha hai", "Pyaas bohot lag rahi hai aaj",
+      "Ice tea ya nimbu pani chahiye", "Tumhara dimag khana hai mujhe 😂", "Kuch meetha khane ki talab ho rahi hai",
+      "Ghar ka simple dal chawal", "Bahar jake khane ka time nahi hai 😭", "Craving a hug from you rn",
+      "Kurkure aur chai", "Bhookh marr gayi padh padh ke", "Ek bada sa pizza order kar lu kya?",
+      "Tumhare dabe mein kya hai lunch mein? Woh khana hai", "Kadhi chawal", "Kuch thanda peene ko chahiye",
+      "Bas ab aur padhna nahi hai", "French fries 🍟", "So jau thodi der?", "Kachori or kachori chaat",
+      "Ek achi si movie dekhne ka mann hai tumhare sath", "Tumse baat karne ki craving ❤️"
     ];
 
-    // --- 30 DAYS OF NIGHTTIME CRAVINGS ---
+    // --- 30 DAYS OF NIGHTTIME CRAVINGS (Casual/Realistic) ---
     const nightCravings = [
-      "Late night Maggi and talking to you 🍜", "Ice cream! (And maybe a hug) 🍦", "A long phone call with my favorite person 🌙",
-      "Just to sleep and dream about you 😴", "Late night movie marathon with you 🍿", "Some spicy late-night noodles 🥡",
-      "A giant chocolate bar 🍫", "Cuddles and endless conversations 🫂", "A warm cup of hot chocolate ☕",
-      "To hear about your entire day in detail 🥰", "Late night pizza delivery 🍕", "Some sweet gulab jamun 🍯",
-      "Just your voice to help me fall asleep 📞", "A plate of late-night biryani 🍲", "To hold you close right now 🧸",
-      "A cold dessert to end the day 🍧", "Some crispy chips and a good show 📺", "A late-night walk with you under the stars ✨",
-      "Something sweet, like you! 🍬", "Just to close my books and rest my eyes 😌", "A warm brownie with vanilla ice cream 🍰",
-      "Late night parathas with butter 🧈", "To fall asleep on a call with you 📱", "A big bowl of pasta 🍝",
-      "Your goodnight kisses 💋", "Some late-night street food adventure 🌃", "A massive slice of cheesecake 🧀",
-      "Just to be lazy with you right now 🛋️", "Some sweet rasmalai 🥛", "To end the day knowing you love me 💕"
+      "Late night maggi supremacy 🍜", "Ice cream at 12 am is a vibe", "Need to sleep but scrolling reels 😭",
+      "Tumhari aawaz sunke sona hai", "Kuch meetha bacha hai kya fridge mein?", "Craving late night talks with you ❤️",
+      "Bhuk lag rahi hai aadhi raat ko", "So jana chahiye mujhe ab", "Ek lamba hug chahiye bas",
+      "Chips aur cold drink wala combo", "Kal se dieting pakka (mazak kar raha hu 😂)", "Thodi der baat kar lu tumse?",
+      "Cheesecake mil jaye kahi se", "Need my bed right now 😴", "Late night drive pe jana hai tumhare sath",
+      "Kuch bhi junk food mil jaye abhi", "Din bhar ka stress bhool ke sona hai", "Your forehead kisses ❤️",
+      "Maggi with extra cheese", "Pani pee ke so raha hu bhookh toh hai", "Meetha khane ki bimari ho gayi hai mujhe",
+      "Tumse milne ki craving constantly rehti hai", "Bas neend aa jaye jaldi aaj", "Leftover pizza from earlier 🍕",
+      "Watching a movie with you right now", "Bohot thak gaya hu, aakhein jal rahi hai", "Cuddles 🥺",
+      "Late night parathe", "Thandi hawa aur tumhara hath", "Goodnight bol ke 2 ghante aur baat karna 😂"
     ];
 
     // --- DYNAMIC CONTENT ENGINE ---
@@ -231,7 +233,7 @@
         renderSchedule();
       } catch (error) {
         document.getElementById('statusText').innerText = "Network Error 😔";
-        document.getElementById('statusSubtext').innerText = "Tell Babu his calendar link is broken!";
+        document.getElementById('statusSubtext').innerText = "Babu needs to check his code!";
       }
     }
 
@@ -283,6 +285,35 @@
       if (schedule.length === 0) return;
 
       const now = new Date();
+      const hour = now.getHours();
+
+      const card = document.getElementById('statusCard');
+      const text = document.getElementById('statusText');
+      const subtext = document.getElementById('statusSubtext');
+      const badge = document.getElementById('statusBadge');
+      const countdownContainer = document.getElementById('countdownContainer');
+      const countdownTimer = document.getElementById('countdownTimer');
+
+      // NEW FEATURE: SLEEPING STATUS (11 PM to 7 AM)
+      if (hour >= 23 || hour < 7) {
+        let wakeUpTime = new Date(now);
+        wakeUpTime.setHours(7, 0, 0, 0);
+        if (hour >= 23) wakeUpTime.setDate(wakeUpTime.getDate() + 1);
+
+        card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-indigo-950/90 to-blue-950/90 border-blue-500/30 flex items-center justify-between shadow-lg shadow-blue-900/20";
+        text.className = "text-2xl font-black mt-1 text-blue-300";
+        text.innerText = "Babu is SLEEPING! 😴";
+        subtext.innerText = `Shhh... he is dreaming about you! 🌙`;
+        badge.className = "h-4 w-4 rounded-full bg-blue-400 shadow-[0_0_15px_rgba(96,165,250,0.8)]";
+        
+        countdownContainer.classList.remove('hidden');
+        document.querySelector('#countdownContainer div:first-child').innerText = 'Waking Up In:';
+        countdownTimer.innerText = formatCountdown(wakeUpTime - now);
+        countdownTimer.className = "text-xl font-mono font-black tracking-tight text-blue-200";
+        return; // Don't check classes if sleeping
+      }
+
+      // If not sleeping, check classes normally
       let activeClass = null;
       let nextClass = null;
 
@@ -298,24 +329,17 @@
         }
       }
 
-      const card = document.getElementById('statusCard');
-      const text = document.getElementById('statusText');
-      const subtext = document.getElementById('statusSubtext');
-      const badge = document.getElementById('statusBadge');
-      const countdownContainer = document.getElementById('countdownContainer');
-      const countdownTimer = document.getElementById('countdownTimer');
-
       if (activeClass) {
-        card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-indigo-950/90 to-purple-950/90 border-indigo-500/30 flex items-center justify-between shadow-lg shadow-indigo-900/20";
-        text.className = "text-2xl font-black mt-1 text-indigo-300";
+        card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-purple-950/90 to-fuchsia-950/90 border-purple-500/30 flex items-center justify-between shadow-lg shadow-purple-900/20";
+        text.className = "text-2xl font-black mt-1 text-purple-300";
         text.innerText = "Babu is in class! 🤫";
         subtext.innerText = `Studying ${activeClass.subject}.\nTalk to you soon! 💕`;
-        badge.className = "h-4 w-4 rounded-full bg-indigo-400 animate-ping shadow-[0_0_15px_rgba(129,140,248,0.8)]";
+        badge.className = "h-4 w-4 rounded-full bg-purple-400 animate-ping shadow-[0_0_15px_rgba(192,132,252,0.8)]";
         
         countdownContainer.classList.remove('hidden');
-        document.querySelector('#countdownContainer div:first-child').innerText = 'Freedom In:';
+        document.querySelector('#countdownContainer div:first-child').innerText = 'Free In:';
         countdownTimer.innerText = formatCountdown(new Date(activeClass.end) - now);
-        countdownTimer.className = "text-xl font-mono font-black tracking-tight text-indigo-200";
+        countdownTimer.className = "text-xl font-mono font-black tracking-tight text-purple-200";
 
       } else {
         card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-pink-950/80 to-rose-950/80 border-pink-500/40 flex items-center justify-between shadow-lg shadow-pink-900/20";
@@ -324,7 +348,7 @@
         badge.className = "h-4 w-4 rounded-full bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.8)]";
         
         if (nextClass) {
-          subtext.innerText = `Call him! His next class is at ${formatTime(nextClass.start)}.`;
+          subtext.innerText = `Call him! Next class is at ${formatTime(nextClass.start)}.`;
           countdownContainer.classList.remove('hidden');
           document.querySelector('#countdownContainer div:first-child').innerText = 'Next Class In:';
           countdownTimer.innerText = formatCountdown(new Date(nextClass.start) - now);
@@ -350,14 +374,13 @@
         container.innerHTML = `
           <div class="text-center p-8 bg-slate-900/50 rounded-3xl border border-slate-800/80 border-dashed">
             <span class="text-4xl block mb-2">🎉</span>
-            <p class="text-slate-400 text-sm font-medium">No upcoming classes for this subject!</p>
+            <p class="text-slate-400 text-sm font-medium">No classes coming up!</p>
           </div>
         `;
         return;
       }
 
       upcoming.forEach(item => {
-        // ADDED EMERALD GREEN COLOR FOR DOUBT SESSIONS!
         const badgeColor = item.subject === 'DBMS' ? 'bg-amber-500/20 text-amber-400' : 
                            item.subject === 'Digital Logic' ? 'bg-sky-500/20 text-sky-400' : 
                            item.subject === 'Doubt Session' ? 'bg-emerald-500/20 text-emerald-400' :
@@ -402,7 +425,7 @@
 
     // Refresh schedule lists & dynamic notes every 1 minute
     setInterval(() => {
-      updateDynamicContent(); // Keeps notes updated as time passes
+      updateDynamicContent();
       const currentFilter = document.querySelector('.bg-pink-600')?.innerText || 'all';
       let filterParam = 'all';
       if (currentFilter.includes('Logic')) filterParam = 'Digital Logic';
