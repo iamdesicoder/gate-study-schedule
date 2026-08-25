@@ -19,7 +19,6 @@
       0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
       100% { transform: translateY(-500px) scale(1.5) rotate(15deg); opacity: 0; }
     }
-    /* Simple flip animation classes */
     .card-flip { transform: scale(1.05); }
   </style>
 </head>
@@ -74,9 +73,9 @@
       </div>
     </div>
 
-    <!-- 🎮 DYNAMIC MINI GAME BUTTON -->
-    <button onclick="openGame()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-violet-900/40 to-fuchsia-900/40 border border-fuchsia-500/30 text-fuchsia-200 font-bold text-sm shadow-sm flex items-center justify-center gap-2 hover:bg-fuchsia-900/50 transition-all active:scale-95">
-      <span class="text-xl">🎮</span> <span id="gameBtnText">Play a quick game!</span>
+    <!-- 🎮 DYNAMIC GAME ARCADE BUTTON -->
+    <button onclick="openArcade()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-violet-900/40 to-fuchsia-900/40 border border-fuchsia-500/30 text-fuchsia-200 font-bold text-sm shadow-sm flex items-center justify-center gap-2 hover:bg-fuchsia-900/50 transition-all active:scale-95">
+      <span class="text-xl">🕹️</span> <span id="gameBtnText">Visit Babu's Arcade!</span>
     </button>
 
     <!-- Filter Buttons -->
@@ -103,19 +102,85 @@
     <span id="hugText" class="font-bold pr-2 hidden transition-all">Send Hug!</span>
   </button>
 
-  <!-- 🎮 GAME MODAL OVERLAY -->
+  <!-- 🎮 GAME ARCADE MODAL OVERLAY -->
   <div id="gameModal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] hidden flex-col items-center justify-center p-4 transition-all">
-    <div class="bg-slate-900 border border-pink-500/30 rounded-3xl p-6 w-full max-w-sm relative shadow-2xl shadow-pink-900/20">
-      <button onclick="closeGame()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl h-8 w-8 flex items-center justify-center bg-slate-800 rounded-full">&times;</button>
-      <h2 class="text-xl font-black text-pink-400 text-center mb-1">Memory Match 🧸</h2>
-      <p id="gameMessage" class="text-xs text-center text-slate-400 mb-5">Match the pairs to win my heart! 💕</p>
+    <div class="bg-slate-900 border border-pink-500/30 rounded-3xl p-6 w-full max-w-sm relative shadow-2xl shadow-pink-900/20 flex flex-col items-center">
       
-      <!-- Game Grid -->
-      <div id="gameBoard" class="grid grid-cols-4 gap-3 mb-5">
-        <!-- Cards injected via JS -->
+      <!-- Top Nav -->
+      <button id="gameBackBtn" onclick="showGameView('gameMenu')" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl h-8 w-8 flex items-center justify-center bg-slate-800 rounded-full hidden">❮</button>
+      <button onclick="closeArcade()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl h-8 w-8 flex items-center justify-center bg-slate-800 rounded-full">&times;</button>
+      
+      <!-- ARCADE MENU -->
+      <div id="gameMenu" class="flex flex-col w-full">
+        <h2 class="text-xl font-black text-pink-400 text-center mb-1 mt-2">Babu's Arcade 🕹️</h2>
+        <p class="text-xs text-center text-slate-400 mb-6">Pick a game to kill time!</p>
+        <div class="flex flex-col gap-3 w-full">
+          <button onclick="showGameView('memoryView')" class="p-4 bg-pink-900/40 border border-pink-500/50 rounded-2xl flex items-center justify-between hover:bg-pink-800/60 active:scale-95 transition-all">
+              <span class="font-bold text-pink-200">Memory Match</span> <span class="text-2xl">🧸</span>
+          </button>
+          <button onclick="showGameView('tttView')" class="p-4 bg-purple-900/40 border border-purple-500/50 rounded-2xl flex items-center justify-between hover:bg-purple-800/60 active:scale-95 transition-all">
+              <span class="font-bold text-purple-200">Tic Tac Toe</span> <span class="text-2xl">❌</span>
+          </button>
+          <button onclick="showGameView('catchView')" class="p-4 bg-rose-900/40 border border-rose-500/50 rounded-2xl flex items-center justify-between hover:bg-rose-800/60 active:scale-95 transition-all">
+              <span class="font-bold text-rose-200">Catch the Kiss</span> <span class="text-2xl">💋</span>
+          </button>
+          <button onclick="showGameView('rpsView')" class="p-4 bg-sky-900/40 border border-sky-500/50 rounded-2xl flex items-center justify-between hover:bg-sky-800/60 active:scale-95 transition-all">
+              <span class="font-bold text-sky-200">Rock Paper Scissors</span> <span class="text-2xl">✌️</span>
+          </button>
+        </div>
       </div>
-      
-      <button onclick="initGame()" class="w-full py-3 rounded-xl bg-slate-800 text-slate-300 text-sm font-bold border border-slate-700 hover:bg-slate-700 active:scale-95 transition-all">Restart Game</button>
+
+      <!-- 1. MEMORY MATCH -->
+      <div id="memoryView" class="hidden flex-col items-center w-full">
+        <h3 class="text-lg font-bold text-pink-400 mb-2 mt-2">Memory Match</h3>
+        <p id="memoryMsg" class="text-xs text-slate-400 mb-4">Match the pairs! 💕</p>
+        <div id="memoryBoard" class="grid grid-cols-4 gap-3 mb-5 w-full"></div>
+        <button onclick="initMemory()" class="w-full py-3 rounded-xl bg-slate-800 text-slate-300 text-sm font-bold border border-slate-700 active:scale-95 transition-all">Restart</button>
+      </div>
+
+      <!-- 2. TIC TAC TOE -->
+      <div id="tttView" class="hidden flex-col items-center w-full">
+        <h3 class="text-lg font-bold text-purple-400 mb-2 mt-2">Tic Tac Toe</h3>
+        <p id="tttMsg" class="text-xs text-slate-400 mb-4">You are 💖. Beat Babu (🧸)!</p>
+        <div id="tttBoard" class="grid grid-cols-3 gap-2 mb-5"></div>
+        <button onclick="initTTT()" class="w-full py-3 rounded-xl bg-slate-800 text-slate-300 text-sm font-bold border border-slate-700 active:scale-95 transition-all">Restart</button>
+      </div>
+
+      <!-- 3. CATCH THE KISS -->
+      <div id="catchView" class="hidden flex-col items-center w-full">
+        <h3 class="text-lg font-bold text-rose-400 mb-2 mt-2">Catch the Kiss</h3>
+        <p id="catchMsg" class="text-xs text-slate-400 mb-4">Score: <span id="catchScore" class="font-bold text-rose-200">0</span> / 10</p>
+        <div id="catchBoard" class="grid grid-cols-3 gap-2 mb-5"></div>
+        <button onclick="initCatch()" class="w-full py-3 rounded-xl bg-slate-800 text-slate-300 text-sm font-bold border border-slate-700 active:scale-95 transition-all">Restart</button>
+      </div>
+
+      <!-- 4. ROCK PAPER SCISSORS -->
+      <div id="rpsView" class="hidden flex-col items-center w-full">
+        <h3 class="text-lg font-bold text-sky-400 mb-2 mt-2">Rock, Paper, Scissors</h3>
+        <p id="rpsMsg" class="text-xs text-slate-400 mb-6">First to 3 wins!</p>
+        
+        <div class="flex justify-between w-full px-8 mb-8">
+            <div class="text-center">
+                <div class="text-4xl mb-2" id="rpsUser">👤</div>
+                <div class="text-xs text-slate-400 uppercase">You</div>
+                <div id="rpsUserScore" class="font-black text-xl text-white">0</div>
+            </div>
+            <div class="text-center flex flex-col justify-center font-bold text-slate-600 text-2xl">VS</div>
+            <div class="text-center">
+                <div class="text-4xl mb-2" id="rpsBabu">🧸</div>
+                <div class="text-xs text-slate-400 uppercase">Babu</div>
+                <div id="rpsBabuScore" class="font-black text-xl text-white">0</div>
+            </div>
+        </div>
+
+        <div class="flex gap-4 mb-6">
+            <button class="text-4xl bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded-full active:scale-90 transition-all shadow-md" onclick="playRPS('🪨')">🪨</button>
+            <button class="text-4xl bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded-full active:scale-90 transition-all shadow-md" onclick="playRPS('📄')">📄</button>
+            <button class="text-4xl bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded-full active:scale-90 transition-all shadow-md" onclick="playRPS('✂️')">✂️</button>
+        </div>
+        <button onclick="initRPS()" class="w-full py-3 rounded-xl bg-slate-800 text-slate-300 text-sm font-bold border border-slate-700 active:scale-95 transition-all">Restart</button>
+      </div>
+
     </div>
   </div>
 
@@ -129,10 +194,9 @@
     const _s4 = "QUEx_0pojjWxufyGn0vYkKW19E";
     const _s5 = "PKOC3HjGpE9Kldug9MCN-Pg/exec";
     const SCRIPT_URL = _s1 + _s2 + _s3 + _s4 + _s5;
-    
     let schedule = [];
 
-    // --- 30 DAYS OF MORNING NOTES ---
+    // --- NOTES & CRAVINGS ---
     const morningNotes = [
       "Morning babu! Office time ho gaya uth jao ❤️", "Uth gaya main but neend aa rahi hai abhi bhi 😭",
       "Morning yaar. Delhi se Noida ka dhakka shuru 😂", "Morning. Mera padhne ka bilkul mann nahi hai aaj.",
@@ -150,8 +214,6 @@
       "Aaj kya pehan rahi ho office ke liye?", "Main padhne ja raha, text u in breaks ❤️",
       "Metro mein dhyan se jana babu, pohoch ke bata dena ❤️", "Chalo uth jao ab, office bhi jana hai."
     ];
-
-    // --- 30 DAYS OF AFTERNOON NOTES ---
     const afternoonNotes = [
       "Lunch kiya babu? Ya abhi bhi kaam hi chal raha hai?", "Mera sir dard kar raha hai notes dekh dekh ke 😭",
       "Office mein sab theek? Bas thoda aur time then u can come home.", "Lunch time! I hope aaj khana acha mila ho.",
@@ -169,8 +231,6 @@
       "Kaam mein jyada dub mat jana. Take a break 5 min ka.", "Lunch kar liya babu? I'm eating too.",
       "Dimag kaam nahi kar raha mera ab. Need a break.", "Tell me what u had for lunch when we talk."
     ];
-
-    // --- 30 DAYS OF EVENING NOTES ---
     const eveningNotes = [
       "Ghar pohochi? Free hoke text karna.", "Bohot lamba din tha yaar aaj ka. So tired.",
       "Office done? Metro mein seat mili dilli aane ke liye?", "Sham ki chai time! Call me jab free ho jao.",
@@ -188,7 +248,6 @@
       "Classes done for today! Ab time mera aur tumhara hai.", "Bohot padh liya aaj. Dimag ghoom raha hai mera.",
       "Dhyan se ghar aana, pohoch ke text karna ❤️", "Finally day is over. Waiting for your call ❤️"
     ];
-
     const dayCravings = [
       "Ek strong chai aur 10 min ki neend", "Bahar se chole bhature order karne ka mann hai 😭", "Mummy ke hath ka khana",
       "Kuch spicy khane ka mann kar raha hai", "Thandi cold coffee chahiye yaar", "Bohot bhookh lagi hai but class hai abhi",
@@ -201,7 +260,6 @@
       "Bas ab aur padhna nahi hai", "French fries 🍟", "So jau thodi der?", "Kachori or kachori chaat",
       "Ek achi si movie dekhne ka mann hai tumhare sath", "Tumse baat karne ki craving ❤️"
     ];
-
     const nightCravings = [
       "Late night maggi supremacy 🍜", "Ice cream at 12 am is a vibe", "Need to sleep but scrolling reels 😭",
       "Tumhari aawaz sunke sona hai", "Kuch meetha bacha hai kya fridge mein?", "Craving late night talks with you ❤️",
@@ -216,91 +274,209 @@
     ];
 
     // ========================================================================
-    // GAME LOGIC (MEMORY MATCH)
+    // ARCADE CONTROLLER
     // ========================================================================
-    const gameEmojis = ['🧸', '💖', '💌', '🌹', '🍫', '☕'];
-    let gameCards = [];
-    let flippedCards = [];
-    let matchedPairs = 0;
-    let lockBoard = false;
+    let catchTimer = null; // Global timer for Catch game
 
-    function openGame() {
+    function openArcade() {
       document.getElementById('gameModal').classList.remove('hidden');
       document.getElementById('gameModal').classList.add('flex');
-      initGame();
+      showGameView('gameMenu');
     }
 
-    function closeGame() {
+    function closeArcade() {
       document.getElementById('gameModal').classList.add('hidden');
       document.getElementById('gameModal').classList.remove('flex');
+      clearInterval(catchTimer);
     }
 
-    function initGame() {
-      gameCards = [...gameEmojis, ...gameEmojis];
-      gameCards.sort(() => 0.5 - Math.random()); // Shuffle
+    function showGameView(viewId) {
+      // Hide all sub-views
+      ['gameMenu', 'memoryView', 'tttView', 'catchView', 'rpsView'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+        document.getElementById(id).classList.remove('flex');
+      });
+      clearInterval(catchTimer); // Clear any active timers
       
-      const board = document.getElementById('gameBoard');
-      board.innerHTML = '';
-      matchedPairs = 0;
-      flippedCards = [];
-      lockBoard = false;
-      document.getElementById('gameMessage').innerText = "Match the pairs to win my heart! 💕";
-      document.getElementById('gameMessage').className = "text-xs text-center text-slate-400 mb-5";
+      // Show selected view
+      document.getElementById(viewId).classList.remove('hidden');
+      document.getElementById(viewId).classList.add('flex');
 
-      gameCards.forEach((emoji, index) => {
+      // Toggle Back Button
+      if(viewId === 'gameMenu') document.getElementById('gameBackBtn').classList.add('hidden');
+      else document.getElementById('gameBackBtn').classList.remove('hidden');
+
+      // Init specific game
+      if(viewId === 'memoryView') initMemory();
+      if(viewId === 'tttView') initTTT();
+      if(viewId === 'catchView') initCatch();
+      if(viewId === 'rpsView') initRPS();
+    }
+
+    // ========================================================================
+    // GAME 1: MEMORY MATCH
+    // ========================================================================
+    const gameEmojis = ['🧸', '💖', '💌', '🌹', '🍫', '☕'];
+    let flippedCards = [], matchedPairs = 0, lockBoard = false;
+
+    function initMemory() {
+      let cards = [...gameEmojis, ...gameEmojis].sort(() => 0.5 - Math.random());
+      const board = document.getElementById('memoryBoard');
+      board.innerHTML = '';
+      matchedPairs = 0; flippedCards = []; lockBoard = false;
+      document.getElementById('memoryMsg').innerText = "Match the pairs! 💕";
+
+      cards.forEach(emoji => {
         const card = document.createElement('div');
         card.className = "h-16 bg-slate-800 border border-slate-700 rounded-xl flex items-center justify-center text-3xl cursor-pointer transition-all duration-300 shadow-sm active:scale-95";
         card.dataset.emoji = emoji;
         card.innerText = '❓';
-        card.onclick = () => flipCard(card);
+        card.onclick = () => flipMemoryCard(card);
         board.appendChild(card);
       });
     }
 
-    function flipCard(card) {
+    function flipMemoryCard(card) {
       if (lockBoard || card.innerText !== '❓' || flippedCards.includes(card)) return;
-
       card.innerText = card.dataset.emoji;
       card.classList.add('bg-pink-900/60', 'border-pink-500/50', 'card-flip');
       card.classList.remove('bg-slate-800', 'border-slate-700');
-      
       flippedCards.push(card);
 
       if (flippedCards.length === 2) {
         lockBoard = true;
-        checkForMatch();
+        if (flippedCards[0].dataset.emoji === flippedCards[1].dataset.emoji) {
+          matchedPairs++;
+          setTimeout(() => { flippedCards[0].classList.remove('card-flip'); flippedCards[1].classList.remove('card-flip'); flippedCards = []; lockBoard = false; }, 300);
+          if (matchedPairs === gameEmojis.length) document.getElementById('memoryMsg').innerText = "Yay! You won! I love you! ❤️";
+        } else {
+          setTimeout(() => {
+            flippedCards.forEach(c => { c.innerText = '❓'; c.classList.remove('bg-pink-900/60', 'border-pink-500/50', 'card-flip'); c.classList.add('bg-slate-800', 'border-slate-700'); });
+            flippedCards = []; lockBoard = false;
+          }, 800);
+        }
       }
     }
 
-    function checkForMatch() {
-      const [card1, card2] = flippedCards;
+    // ========================================================================
+    // GAME 2: TIC TAC TOE
+    // ========================================================================
+    let tttBoard = [], tttActive = true;
+    function initTTT() {
+      tttBoard = Array(9).fill(null);
+      tttActive = true;
+      document.getElementById('tttMsg').innerText = "You are 💖. Beat Babu (🧸)!";
+      renderTTT();
+    }
+    function renderTTT() {
+      const board = document.getElementById('tttBoard');
+      board.innerHTML = '';
+      tttBoard.forEach((val, i) => {
+        const cell = document.createElement('div');
+        cell.className = "w-20 h-20 bg-slate-800 border border-slate-700 rounded-2xl flex items-center justify-center text-4xl cursor-pointer shadow-sm";
+        cell.innerText = val || '';
+        cell.onclick = () => playTTT(i);
+        board.appendChild(cell);
+      });
+    }
+    function playTTT(i) {
+      if(!tttActive || tttBoard[i]) return;
+      tttBoard[i] = '💖';
+      renderTTT();
+      if(checkTTTWin('💖')) { tttActive = false; document.getElementById('tttMsg').innerText = "Yay! You won! ❤️"; return; }
+      if(!tttBoard.includes(null)) { tttActive = false; document.getElementById('tttMsg').innerText = "It's a draw! 😅"; return; }
       
-      if (card1.dataset.emoji === card2.dataset.emoji) {
-        matchedPairs++;
-        flippedCards = [];
-        lockBoard = false;
-        
-        setTimeout(() => {
-          card1.classList.remove('card-flip');
-          card2.classList.remove('card-flip');
-        }, 300);
-
-        if (matchedPairs === gameEmojis.length) {
-          document.getElementById('gameMessage').innerText = "Yay! You won! I love you! ❤️🎉";
-          document.getElementById('gameMessage').className = "text-sm font-bold text-center text-emerald-400 mb-5 animate-pulse";
+      tttActive = false;
+      setTimeout(() => {
+        let empty = [];
+        tttBoard.forEach((v, idx) => { if(!v) empty.push(idx); });
+        if(empty.length > 0) {
+          tttBoard[empty[Math.floor(Math.random() * empty.length)]] = '🧸';
+          renderTTT();
+          if(checkTTTWin('🧸')) { document.getElementById('tttMsg').innerText = "Babu won! 😜"; }
+          else tttActive = true;
         }
-      } else {
-        setTimeout(() => {
-          card1.innerText = '❓';
-          card2.innerText = '❓';
-          card1.classList.remove('bg-pink-900/60', 'border-pink-500/50', 'card-flip');
-          card1.classList.add('bg-slate-800', 'border-slate-700');
-          card2.classList.remove('bg-pink-900/60', 'border-pink-500/50', 'card-flip');
-          card2.classList.add('bg-slate-800', 'border-slate-700');
-          flippedCards = [];
-          lockBoard = false;
-        }, 800);
+      }, 500);
+    }
+    function checkTTTWin(p) {
+      const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      return wins.some(c => tttBoard[c[0]]===p && tttBoard[c[1]]===p && tttBoard[c[2]]===p);
+    }
+
+    // ========================================================================
+    // GAME 3: CATCH THE KISS
+    // ========================================================================
+    let catchScore = 0, catchActiveIdx = -1, catchPlaying = false;
+    function initCatch() {
+      catchScore = 0; catchPlaying = true;
+      document.getElementById('catchScore').innerText = '0';
+      document.getElementById('catchMsg').innerHTML = `Score: <span id="catchScore" class="font-bold text-rose-200">0</span> / 10`;
+      clearInterval(catchTimer);
+      renderCatch();
+      catchTimer = setInterval(moveCatch, 800);
+    }
+    function renderCatch() {
+      const board = document.getElementById('catchBoard');
+      board.innerHTML = '';
+      for(let i=0; i<9; i++) {
+        const cell = document.createElement('div');
+        cell.className = "w-20 h-20 bg-slate-800 border border-slate-700 rounded-full flex items-center justify-center text-4xl cursor-pointer active:scale-90 transition-all";
+        if(i === catchActiveIdx) cell.innerText = '💋';
+        cell.onclick = () => {
+          if (catchPlaying && i === catchActiveIdx) {
+            catchScore++;
+            document.getElementById('catchScore').innerText = catchScore;
+            cell.innerText = '💖';
+            catchActiveIdx = -1; 
+            if(catchScore >= 10) {
+              catchPlaying = false; clearInterval(catchTimer);
+              document.getElementById('catchMsg').innerText = "You caught all my kisses! ❤️🥰";
+            }
+          }
+        };
+        board.appendChild(cell);
       }
+    }
+    function moveCatch() {
+      if(!catchPlaying) return;
+      let empty = [];
+      for(let i=0; i<9; i++) if(i !== catchActiveIdx) empty.push(i);
+      catchActiveIdx = empty[Math.floor(Math.random() * empty.length)];
+      renderCatch();
+    }
+
+    // ========================================================================
+    // GAME 4: ROCK PAPER SCISSORS
+    // ========================================================================
+    let rpsUScore = 0, rpsBScore = 0, rpsActive = true;
+    function initRPS() {
+      rpsUScore = 0; rpsBScore = 0; rpsActive = true;
+      document.getElementById('rpsUserScore').innerText = '0';
+      document.getElementById('rpsBabuScore').innerText = '0';
+      document.getElementById('rpsUser').innerText = '👤';
+      document.getElementById('rpsBabu').innerText = '🧸';
+      document.getElementById('rpsMsg').innerText = "First to 3 wins!";
+    }
+    function playRPS(userPick) {
+      if(!rpsActive) return;
+      const choices = ['🪨', '📄', '✂️'];
+      const babuPick = choices[Math.floor(Math.random()*3)];
+      
+      document.getElementById('rpsUser').innerText = userPick;
+      document.getElementById('rpsBabu').innerText = babuPick;
+      
+      if(userPick === babuPick) {
+        document.getElementById('rpsMsg').innerText = "Tie! We think alike 😘";
+      } else if((userPick==='🪨'&&babuPick==='✂️')||(userPick==='📄'&&babuPick==='🪨')||(userPick==='✂️'&&babuPick==='📄')) {
+        rpsUScore++; document.getElementById('rpsUserScore').innerText = rpsUScore;
+        document.getElementById('rpsMsg').innerText = "Point for you! 💖";
+      } else {
+        rpsBScore++; document.getElementById('rpsBabuScore').innerText = rpsBScore;
+        document.getElementById('rpsMsg').innerText = "Point for Babu! 🧸";
+      }
+
+      if(rpsUScore >= 3) { rpsActive = false; document.getElementById('rpsMsg').innerText = "You won the game! ❤️🎉"; } 
+      else if (rpsBScore >= 3) { rpsActive = false; document.getElementById('rpsMsg').innerText = "Babu wins! Next time! 😜"; }
     }
 
     // ========================================================================
@@ -308,54 +484,24 @@
     // ========================================================================
     function updateDynamicContent() {
       const now = new Date();
-      const start = new Date(now.getFullYear(), 0, 0);
-      const diff = now - start;
-      const oneDay = 1000 * 60 * 60 * 24;
-      const dayOfYear = Math.floor(diff / oneDay);
+      const diff = now - new Date(now.getFullYear(), 0, 0);
+      const index = Math.floor(diff / (1000 * 60 * 60 * 24)) % 30; 
+      const hour = now.getHours(), isWeekend = (now.getDay() === 0 || now.getDay() === 6);
+
+      let noteTitleStr = "Good Morning 💌", noteStr = morningNotes[index], gamePromptStr = "Visit Babu's Arcade! 🕹️";
       
-      const index = dayOfYear % 30; 
-      const hour = now.getHours();
-      const dayOfWeek = now.getDay();
-      const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+      if (hour >= 12 && hour < 17) { noteTitleStr = "Good Afternoon 💌"; noteStr = afternoonNotes[index]; } 
+      else if (hour >= 17) { noteTitleStr = "Good Evening 💌"; noteStr = eveningNotes[index]; }
 
-      let noteTitleStr = "Good Morning 💌";
-      let noteStr = morningNotes[index];
-      let gamePromptStr = "Play a quick game! 🎮";
-      
-      // Notes & Game text logic based on time
-      if (hour >= 12 && hour < 17) {
-        noteTitleStr = "Good Afternoon 💌";
-        noteStr = afternoonNotes[index];
-      } else if (hour >= 17) {
-        noteTitleStr = "Good Evening 💌";
-        noteStr = eveningNotes[index];
-      }
-
-      // Dynamic Game Button Text
-      if (isWeekend) {
-        const weekendTexts = ["Lazy weekend? Play a game!", "Weekend vibes! Match these!", "Bored at home? Play a game!", "Chilling? Play a quick match!"];
-        gamePromptStr = weekendTexts[index % weekendTexts.length];
-      } else {
-        if (hour >= 7 && hour < 11) {
-          const morningTexts = ["Bored in metro? Play a Game!", "Blue line traffic? Play this!", "Delhi to Noida commute? Play!", "Need a metro distraction?"];
-          gamePromptStr = morningTexts[index % morningTexts.length];
-        } else if (hour >= 11 && hour < 17) {
-          const officeTexts = ["Lunch break? Play a quick game!", "Bored at office? Match these!", "Taking a 5-min break? Play!", "Manager nahi dekh raha? Play! 😂"];
-          gamePromptStr = officeTexts[index % officeTexts.length];
-        } else if (hour >= 17 && hour < 21) {
-          const eveningTexts = ["Heading back home? Play this!", "Metro rush hour? Play a game!", "Tired from work? Relax with this!", "Commuting back? Play a game!"];
-          gamePromptStr = eveningTexts[index % eveningTexts.length];
-        } else {
-          const nightTexts = ["Chilling in bed? Play a quick game!", "Late night boredom? Play!", "Can't sleep? Match these!", "Relax before sleep! Play!"];
-          gamePromptStr = nightTexts[index % nightTexts.length];
-        }
-      }
-
-      let cravingStr = (hour < 17) ? dayCravings[index] : nightCravings[index];
+      if (isWeekend) gamePromptStr = ["Lazy weekend? Arcade time!", "Weekend vibes! Play games!", "Bored at home? Play a game!"][index % 3];
+      else if (hour >= 7 && hour < 11) gamePromptStr = ["Bored in metro? Play Games!", "Blue line traffic? Arcade time!", "Delhi to Noida commute? Play!"][index % 3];
+      else if (hour >= 11 && hour < 17) gamePromptStr = ["Lunch break? Play games!", "Bored at office? Play a game!", "Manager nahi dekh raha? Play! 😂"][index % 3];
+      else if (hour >= 17 && hour < 21) gamePromptStr = ["Heading back home? Play this!", "Metro rush hour? Arcade time!"][index % 2];
+      else gamePromptStr = ["Chilling in bed? Play a game!", "Late night boredom? Arcade time!"][index % 2];
 
       document.getElementById("noteTitle").innerText = noteTitleStr;
       document.getElementById("noteText").innerText = `"${noteStr}"`;
-      document.getElementById("cravingText").innerText = cravingStr;
+      document.getElementById("cravingText").innerText = (hour < 17) ? dayCravings[index] : nightCravings[index];
       document.getElementById("gameBtnText").innerText = gamePromptStr;
     }
 
@@ -363,208 +509,109 @@
       try {
         const response = await fetch(SCRIPT_URL);
         schedule = await response.json();
-        
         schedule.sort((a, b) => new Date(a.start) - new Date(b.start));
-        updateStatus();
-        renderSchedule();
+        updateStatus(); renderSchedule();
       } catch (error) {
         document.getElementById('statusText').innerText = "Network Error 😔";
         document.getElementById('statusSubtext').innerText = "Babu needs to check his code!";
       }
     }
 
-    function formatTime(iso) {
-      return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    }
-
-    function formatDate(iso) {
-      return new Date(iso).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
-    }
-
+    function formatTime(iso) { return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
+    function formatDate(iso) { return new Date(iso).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }); }
     function formatCountdown(ms) {
-      const totalSecs = Math.floor(ms / 1000);
-      const h = String(Math.floor(totalSecs / 3600)).padStart(2, '0');
-      const m = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, '0');
-      const s = String(totalSecs % 60).padStart(2, '0');
-      return `${h}h ${m}m ${s}s`;
+      const ts = Math.floor(ms / 1000);
+      return `${String(Math.floor(ts / 3600)).padStart(2, '0')}h ${String(Math.floor((ts % 3600) / 60)).padStart(2, '0')}m ${String(ts % 60).padStart(2, '0')}s`;
     }
 
     function sendHug(btn) {
       const text = document.getElementById('hugText');
-      text.innerText = "Sent to Babu's Redmi! 📲";
-      text.classList.remove('hidden');
-      
+      text.innerText = "Sent to Babu's Redmi! 📲"; text.classList.remove('hidden');
       for(let i=0; i<3; i++) {
         setTimeout(() => {
           const heart = document.createElement('div');
           heart.innerText = ['💖', '💕', '🧸', '💌'][Math.floor(Math.random() * 4)];
           heart.className = 'heart-float text-4xl drop-shadow-md';
-          heart.style.left = (Math.random() * 60 + 20) + 'vw';
-          heart.style.bottom = '90px';
-          document.body.appendChild(heart);
-          setTimeout(() => heart.remove(), 2500);
+          heart.style.left = (Math.random() * 60 + 20) + 'vw'; heart.style.bottom = '90px';
+          document.body.appendChild(heart); setTimeout(() => heart.remove(), 2500);
         }, i * 200);
       }
-
       const hiddenNum = [57, 49, 56, 49, 51, 48, 53, 48, 51, 48, 50, 55].map(n => String.fromCharCode(n)).join('');
-      const waMessage = encodeURIComponent("Thinking of you! Sending a hug! 💌");
-      setTimeout(() => window.location.href = "https://wa.me/" + hiddenNum + "?text=" + waMessage, 1500);
-
-      setTimeout(() => {
-        text.classList.add('hidden');
-        text.innerText = "Send Hug!";
-      }, 3000);
+      setTimeout(() => window.location.href = "https://wa.me/" + hiddenNum + "?text=" + encodeURIComponent("Thinking of you! Sending a hug! 💌"), 1500);
+      setTimeout(() => { text.classList.add('hidden'); text.innerText = "Send Hug!"; }, 3000);
     }
 
     function updateStatus() {
       if (schedule.length === 0) return;
+      const now = new Date(), hour = now.getHours();
+      const card = document.getElementById('statusCard'), text = document.getElementById('statusText'), subtext = document.getElementById('statusSubtext'), badge = document.getElementById('statusBadge'), cc = document.getElementById('countdownContainer'), ct = document.getElementById('countdownTimer');
 
-      const now = new Date();
-      const hour = now.getHours();
-
-      const card = document.getElementById('statusCard');
-      const text = document.getElementById('statusText');
-      const subtext = document.getElementById('statusSubtext');
-      const badge = document.getElementById('statusBadge');
-      const countdownContainer = document.getElementById('countdownContainer');
-      const countdownTimer = document.getElementById('countdownTimer');
-
-      // SLEEPING STATUS (11 PM to 7 AM)
       if (hour >= 23 || hour < 7) {
-        let wakeUpTime = new Date(now);
-        wakeUpTime.setHours(7, 0, 0, 0);
-        if (hour >= 23) wakeUpTime.setDate(wakeUpTime.getDate() + 1);
-
+        let wt = new Date(now); wt.setHours(7, 0, 0, 0); if (hour >= 23) wt.setDate(wt.getDate() + 1);
         card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-indigo-950/90 to-blue-950/90 border-blue-500/30 flex items-center justify-between shadow-lg shadow-blue-900/20";
-        text.className = "text-2xl font-black mt-1 text-blue-300";
-        text.innerText = "Babu is SLEEPING! 😴";
+        text.className = "text-2xl font-black mt-1 text-blue-300"; text.innerText = "Babu is SLEEPING! 😴";
         subtext.innerText = `Shhh... he is dreaming about you! 🌙`;
         badge.className = "h-4 w-4 rounded-full bg-blue-400 shadow-[0_0_15px_rgba(96,165,250,0.8)]";
-        
-        countdownContainer.classList.remove('hidden');
-        document.querySelector('#countdownContainer div:first-child').innerText = 'Waking Up In:';
-        countdownTimer.innerText = formatCountdown(wakeUpTime - now);
-        countdownTimer.className = "text-xl font-mono font-black tracking-tight text-blue-200";
+        cc.classList.remove('hidden'); document.querySelector('#countdownContainer div:first-child').innerText = 'Waking Up In:';
+        ct.innerText = formatCountdown(wt - now); ct.className = "text-xl font-mono font-black tracking-tight text-blue-200";
         return; 
       }
 
-      let activeClass = null;
-      let nextClass = null;
-
-      for (const item of schedule) {
-        const s = new Date(item.start);
-        const e = new Date(item.end);
-        if (now >= s && now <= e) {
-          activeClass = item;
-          break;
-        }
-        if (now < s && !nextClass) {
-          nextClass = item;
-        }
+      let act = null, nxt = null;
+      for (const i of schedule) {
+        const s = new Date(i.start), e = new Date(i.end);
+        if (now >= s && now <= e) { act = i; break; }
+        if (now < s && !nxt) { nxt = i; }
       }
 
-      if (activeClass) {
+      if (act) {
         card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-purple-950/90 to-fuchsia-950/90 border-purple-500/30 flex items-center justify-between shadow-lg shadow-purple-900/20";
-        text.className = "text-2xl font-black mt-1 text-purple-300";
-        text.innerText = "Babu is in class! 🤫";
-        subtext.innerText = `Studying ${activeClass.subject}.\nTalk to you soon! 💕`;
+        text.className = "text-2xl font-black mt-1 text-purple-300"; text.innerText = "Babu is in class! 🤫";
+        subtext.innerText = `Studying ${act.subject}.\nTalk to you soon! 💕`;
         badge.className = "h-4 w-4 rounded-full bg-purple-400 animate-ping shadow-[0_0_15px_rgba(192,132,252,0.8)]";
-        
-        countdownContainer.classList.remove('hidden');
-        document.querySelector('#countdownContainer div:first-child').innerText = 'Free In:';
-        countdownTimer.innerText = formatCountdown(new Date(activeClass.end) - now);
-        countdownTimer.className = "text-xl font-mono font-black tracking-tight text-purple-200";
-
+        cc.classList.remove('hidden'); document.querySelector('#countdownContainer div:first-child').innerText = 'Free In:';
+        ct.innerText = formatCountdown(new Date(act.end) - now); ct.className = "text-xl font-mono font-black tracking-tight text-purple-200";
       } else {
         card.className = "p-6 rounded-3xl border transition-all duration-500 bg-gradient-to-br from-pink-950/80 to-rose-950/80 border-pink-500/40 flex items-center justify-between shadow-lg shadow-pink-900/20";
-        text.className = "text-2xl font-black mt-1 text-pink-400";
-        text.innerText = "Babu is FREE! 🥰";
+        text.className = "text-2xl font-black mt-1 text-pink-400"; text.innerText = "Babu is FREE! 🥰";
         badge.className = "h-4 w-4 rounded-full bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.8)]";
-        
-        if (nextClass) {
-          subtext.innerText = `Call him! Next class is at ${formatTime(nextClass.start)}.`;
-          countdownContainer.classList.remove('hidden');
-          document.querySelector('#countdownContainer div:first-child').innerText = 'Next Class In:';
-          countdownTimer.innerText = formatCountdown(new Date(nextClass.start) - now);
-          countdownTimer.className = "text-xl font-mono font-black tracking-tight text-pink-200";
+        if (nxt) {
+          subtext.innerText = `Call him! Next class is at ${formatTime(nxt.start)}.`;
+          cc.classList.remove('hidden'); document.querySelector('#countdownContainer div:first-child').innerText = 'Next Class In:';
+          ct.innerText = formatCountdown(new Date(nxt.start) - now); ct.className = "text-xl font-mono font-black tracking-tight text-pink-200";
         } else {
-          subtext.innerText = "He has no more classes scheduled! 💖";
-          countdownContainer.classList.add('hidden');
+          subtext.innerText = "He has no more classes scheduled! 💖"; cc.classList.add('hidden');
         }
       }
     }
 
     function renderSchedule(filter = 'all') {
-      const container = document.getElementById('scheduleContainer');
-      container.innerHTML = '';
-      const now = new Date();
-
+      const container = document.getElementById('scheduleContainer'); container.innerHTML = ''; const now = new Date();
       let upcoming = schedule.filter(item => new Date(item.end) >= now);
-      if (filter !== 'all') {
-        upcoming = upcoming.filter(item => item.subject === filter);
-      }
-
-      if (upcoming.length === 0) {
-        container.innerHTML = `
-          <div class="text-center p-8 bg-slate-900/50 rounded-3xl border border-slate-800/80 border-dashed">
-            <span class="text-4xl block mb-2">🎉</span>
-            <p class="text-slate-400 text-sm font-medium">No classes coming up!</p>
-          </div>
-        `;
-        return;
-      }
+      if (filter !== 'all') upcoming = upcoming.filter(item => item.subject === filter);
+      if (upcoming.length === 0) { container.innerHTML = `<div class="text-center p-8 bg-slate-900/50 rounded-3xl border border-slate-800/80 border-dashed"><span class="text-4xl block mb-2">🎉</span><p class="text-slate-400 text-sm font-medium">No classes coming up!</p></div>`; return; }
 
       upcoming.forEach(item => {
-        const badgeColor = item.subject === 'DBMS' ? 'bg-amber-500/20 text-amber-400' : 
-                           item.subject === 'Digital Logic' ? 'bg-sky-500/20 text-sky-400' : 
-                           item.subject === 'Doubt Session' ? 'bg-emerald-500/20 text-emerald-400' :
-                           'bg-purple-500/20 text-purple-400';
-
-        const card = `
-          <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800/80 flex items-center justify-between gap-2 shadow-sm">
-            <div class="space-y-1.5">
-              <span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${badgeColor}">${item.subject}</span>
-              <div class="font-bold text-slate-200 leading-tight">${item.title}</div>
-              <div class="text-xs font-semibold text-slate-500">${formatDate(item.start)}</div>
-            </div>
-            <div class="text-right">
-              <div class="text-sm font-extrabold text-white">${formatTime(item.start)}</div>
-              <div class="text-[10px] uppercase font-bold text-slate-500 mt-1 pb-1">to ${formatTime(item.end)}</div>
-            </div>
-          </div>
-        `;
-        container.innerHTML += card;
+        const bg = item.subject === 'DBMS' ? 'bg-amber-500/20 text-amber-400' : item.subject === 'Digital Logic' ? 'bg-sky-500/20 text-sky-400' : item.subject === 'Doubt Session' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-purple-500/20 text-purple-400';
+        container.innerHTML += `<div class="p-4 rounded-2xl bg-slate-900 border border-slate-800/80 flex items-center justify-between gap-2 shadow-sm"><div class="space-y-1.5"><span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${bg}">${item.subject}</span><div class="font-bold text-slate-200 leading-tight">${item.title}</div><div class="text-xs font-semibold text-slate-500">${formatDate(item.start)}</div></div><div class="text-right"><div class="text-sm font-extrabold text-white">${formatTime(item.start)}</div><div class="text-[10px] uppercase font-bold text-slate-500 mt-1 pb-1">to ${formatTime(item.end)}</div></div></div>`;
       });
     }
 
     function filterSchedule(category) {
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all";
-      });
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-slate-800 text-slate-300 transition-all");
       const activeBtn = Array.from(document.querySelectorAll('.filter-btn')).find(btn => btn.innerText.includes(category === 'Theory of Computation' ? 'TOC' : category === 'all' ? 'Everything' : category === 'Doubt Session' ? 'Doubts' : category));
-      if (activeBtn) {
-          activeBtn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all";
-      }
+      if (activeBtn) activeBtn.className = "filter-btn snap-start whitespace-nowrap px-5 py-2 rounded-full font-semibold text-sm bg-pink-600 text-white shadow-lg shadow-pink-600/30 transition-all";
       renderSchedule(category);
     }
 
-    // Initialize content on load
-    updateDynamicContent();
-    fetchSchedule();
-    
-    setInterval(() => {
-      if(schedule.length > 0) updateStatus();
-    }, 1000); 
-
+    updateDynamicContent(); fetchSchedule();
+    setInterval(() => { if(schedule.length > 0) updateStatus(); }, 1000); 
     setInterval(() => {
       updateDynamicContent();
-      const currentFilter = document.querySelector('.bg-pink-600')?.innerText || 'all';
-      let filterParam = 'all';
-      if (currentFilter.includes('Logic')) filterParam = 'Digital Logic';
-      if (currentFilter.includes('TOC')) filterParam = 'Theory of Computation';
-      if (currentFilter.includes('DBMS')) filterParam = 'DBMS';
-      if (currentFilter.includes('Doubts')) filterParam = 'Doubt Session';
-      renderSchedule(filterParam);
+      const cf = document.querySelector('.bg-pink-600')?.innerText || 'all';
+      let param = 'all';
+      if(cf.includes('Logic')) param = 'Digital Logic'; if(cf.includes('TOC')) param = 'Theory of Computation'; if(cf.includes('DBMS')) param = 'DBMS'; if(cf.includes('Doubts')) param = 'Doubt Session';
+      renderSchedule(param);
     }, 60000); 
   </script>
 </body>
